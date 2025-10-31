@@ -1,0 +1,48 @@
+{% extends 'base.html' %} {% block title %}Dashboard{% endblock %} {% block content %}
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+            <h6 class="card-title text-primary">Total Tests</h6>
+            <h2 class="fw-bold mb-0" id="total-tests">1,250</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+            <h6 class="card-title text-success">Completed Reports</h6>
+            <h2 class="fw-bold mb-0" id="completed-tests">1,050</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+            <h6 class="card-title text-warning">Pending Reports</h6>
+            <h2 class="fw-bold mb-0" id="pending-tests">200</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+            <h6 class="card-title text-info">Doctors</h6>
+            <h2 class="fw-bold mb-0" id="doctors-count">15</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm p-3">
+            <h6 class="card-title">Test Status Distribution</h6>
+            <div class="chart-wrapper">
+                <canvas id="testStatusChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm p-3">
+            <h6 class="card-title">Patients by Type</h6>
+            <div class="chart-wrapper">
+                <canvas id="patientTypeChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

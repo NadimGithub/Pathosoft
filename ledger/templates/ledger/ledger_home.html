@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ledger Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f6f9fc; margin: 20px; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+        h2 { color: #007b5e; border-bottom: 2px solid #007b5e; padding-bottom: 5px; }
+        select, button { padding: 6px; margin: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background: #e8f5e9; }
+        tfoot { background: #f1f8e9; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Ledger Report</h2>
+
+    <form method="get">
+        <label>Type:</label>
+        <select name="party_type" onchange="this.form.submit()">
+            <option value="patient" {% if party_type == 'patient' %}selected{% endif %}>Patient</option>
+            <option value="doctor" {% if party_type == 'doctor' %}selected{% endif %}>Doctor</option>
+        </select>
+
+        <label>Select:</label>
+        <select name="id">
+            <option value="">All</option>
+            {% for p in parties %}
+                <option value="{{ p.id }}" {% if request.GET.id == p.id|stringformat:"s" %}selected{% endif %}>{{ p }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Show</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for l in ledger_entries %}
+            <tr>
+                <td>{{ l.date }}</td>
+                <td>{{ l.description }}</td>
+                <td>{{ l.transaction_type|title }}</td>
+                <td>{{ l.amount }}</td>
+                <td>{{ l.balance_after }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No records found</td></tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">Total</td>
+                <td>Credit: {{ total_credit }}</td>
+                <td>Debit: {{ total_debit }}</td>
+                <td>Balance: {{ balance }}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+</body>
+</html>

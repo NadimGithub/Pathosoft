@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h4 class="fw-bold text-primary">Update Ledger Entry</h4>
+  <hr>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="row g-3">
+      <div class="col-md-3">
+        <label>Party Type</label>
+        {{ form.party_type|add_class:"form-select" }}
+      </div>
+      <div class="col-md-4">
+        <label>Patient</label>
+        {{ form.patient|add_class:"form-select" }}
+      </div>
+      <div class="col-md-4">
+        <label>Doctor</label>
+        {{ form.doctor|add_class:"form-select" }}
+      </div>
+      <div class="col-md-3">
+        <label>Transaction Type</label>
+        {{ form.transaction_type|add_class:"form-select" }}
+      </div>
+      <div class="col-md-3">
+        <label>Amount</label>
+        {{ form.amount|add_class:"form-control" }}
+      </div>
+      <div class="col-md-6">
+        <label>Description</label>
+        {{ form.description|add_class:"form-control" }}
+      </div>
+    </div>
+    <div class="text-end mt-3">
+      <button type="submit" class="btn btn-primary">Update</button>
+      <a href="{% url 'view_ledger' %}" class="btn btn-danger">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

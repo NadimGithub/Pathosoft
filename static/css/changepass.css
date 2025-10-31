@@ -1,0 +1,136 @@
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 30, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    width: 500px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-header {
+    background: #9b00ff;
+    color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.close-btn {
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    color: #d9d9d9;
+}
+
+.form-group {
+    padding: 15px 25px;
+    position: relative;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 40px 8px 10px;
+    background-color: #faf9ff;
+    transition: 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #9b00ff;
+    box-shadow: 0 0 5px rgba(155, 0, 255, 0.3);
+    outline: none;
+}
+
+.toggle-icon {
+    position: absolute;
+    right: 35px;
+    top: 65%;
+    transform: translateY(-50%);
+    color: #9b00ff;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: 0.3s;
+}
+
+.toggle-icon:hover {
+    color: #7b00cc;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    gap: 10px;
+    background: #faf9ff;
+}
+
+.btn-update {
+    background: #9b00ff;
+    color: #fff;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-update:hover {
+    background: #7b00cc;
+}
+
+.btn-cancel {
+    background: #444;
+    color: #fff;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-cancel:hover {
+    background: #333;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Delete Lab{% endblock %}
+{% block content %}
+<h4>Are you sure you want to delete "{{ lab.lab_name }}"?</h4>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="{% url 'lab_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

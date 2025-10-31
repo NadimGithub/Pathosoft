@@ -1,0 +1,179 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Profit Share (%) Wise{% endblock %} {% block content %}
+<link rel="stylesheet" href="{% static 'css/lab_list.css' %}">
+<style>
+    /* Make text visible inside the select and dropdown list */
+    
+    select#doctorName,
+    select#doctorName option {
+        color: #000 !important;
+        background-color: #fff !important;
+    }
+    /* Fix for dark mode or gradient card backgrounds */
+    
+    .form-select {
+        background-color: #fff !important;
+        color: #000 !important;
+        border: 1px solid #ccc;
+    }
+    /* Optional: improve hover style */
+    
+    select#doctorName option:hover,
+    select#doctorName:focus option:checked {
+        background-color: #e9ecef !important;
+        color: #000 !important;
+    }
+</style>
+
+<div class="container-fluid my-5 d-flex justify-content-center">
+    <div class="card shadow-lg border-0 rounded-4 w-90">
+
+        <!-- ✅ HEADER -->
+        <div class="card-header">
+            <h4><i class="fa-solid fa-hand-holding-dollar me-2"></i>Profit Share (%) Wise</h4>
+
+            <!-- Search Bar (Optional - same layout as Lab page) -->
+            <div class="search-bar position-relative">
+                <input type="text" id="doctorSearch" placeholder="Search doctor..." autocomplete="off" />
+                <i class="fa fa-search"></i>
+                <div id="suggestionsBox" class="suggestions shadow-sm"></div>
+            </div>
+
+            <!-- Just a dummy Add Button to match layout symmetry -->
+            <a href="#" class="btn btn-primary btn-sm disabled">Profit Share</a>
+        </div>
+        <!-- ✅ Close header -->
+
+        <!-- ✅ FORM SECTION -->
+        <form method="GET" class="p-4">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label for="doctorName" class="form-label fw-semibold">Doctor Name</label>
+                    <select id="doctorName" name="doctorName" class="form-select shadow-sm" style="color: black;" required>
+    <option value="">Select Doctor</option>
+    {% for doctor in doctors %}
+        <option  value="{{ doctor.id }}" {% if selected_doctor == doctor.id %}selected{% endif %} style="color: black;">
+            {{ doctor.name }}
+        </option>
+    {% endfor %}
+</select>
+
+                </div>
+
+                <div class="col-md-6">
+                    <label for="percent" class="form-label fw-semibold">P. Share (%)</label>
+                    <input type="number" id="percent" name="percent" class="form-control shadow-sm" value="{{ commission_percent }}" placeholder="Enter %" min="0" required>
+                </div>
+
+                <div class="col-md-12 text-center">
+                    <div class="form-check d-inline-block me-3">
+                        <input class="form-check-input" type="radio" name="amt_type" checked>
+                        <label class="form-check-label">As Per Net Amt</label>
+                    </div>
+                </div>
+
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary px-4 py-2 fw-semibold">OK</button>
+                    <a href="{% url 'doctor_commission' %}" class="btn btn-danger px-4 py-2 fw-semibold">Clear</a>
+                </div>
+            </div>
+        </form>
+
+        {% if patients %}
+        <!-- ✅ TABLE SECTION -->
+        <div class="table-responsive mt-3">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Voucher No</th>
+                        <th>Patient</th>
+                        <th>Total Cost (₹)</th>
+                        <th>P.Share (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in patients %}
+                    <tr>
+                        <td>{{ p.reporting_date|date:"d M Y" }}</td>
+                        <td>{{ p.patient_id }}</td>
+                        <td>{{ p.patient_name }}</td>
+                        <td>{{ p.total_amount|default:0 }}</td>
+                        <td>{{ p.share|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="fw-bold text-end">Total</td>
+                        <td class="fw-bold">{{ total_cost|floatformat:2 }}</td>
+                        <td class="fw-bold">{{ total_share|floatformat:2 }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- ✅ PAGINATION -->
+        {% if patients.has_other_pages %}
+        <div class="d-flex justify-content-center my-3">
+            <ul class="pagination">
+                {% if patients.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ patients.previous_page_number }}">&laquo;</a></li>
+                {% endif %} {% for num in patients.paginator.page_range %} {% if patients.number == num %}
+                <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %} {% endfor %} {% if patients.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ patients.next_page_number }}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+
+    </div>
+
+
+
+</div>
+
+
+
+<script>
+    const selectAll = document.getElementById('selectAll');
+    const rows = document.querySelectorAll('#reportTable tbody tr');
+    const summary = document.getElementById('summary');
+
+    function updateSummary() {
+        let count = 0,
+            totalCost = 0,
+            totalShare = 0;
+        rows.forEach(r => {
+            if (r.classList.contains('selected')) {
+                count++;
+                totalCost += parseFloat(r.cells[5].innerText) || 0;
+                totalShare += parseFloat(r.cells[6].innerText) || 0;
+            }
+        });
+        summary.textContent = `Count # ${count} | Total Cost ${totalCost.toFixed(2)} | Total Share ${totalShare.toFixed(2)}`;
+    }
+
+    rows.forEach(row => {
+        row.addEventListener('click', () => {
+            row.classList.toggle('selected');
+            updateSummary();
+        });
+    });
+
+    selectAll.addEventListener('change', e => {
+        rows.forEach(r => r.classList.toggle('selected', e.target.checked));
+        updateSummary();
+    });
+</script>
+
+
+
+
+
+
+
+{% endblock %}

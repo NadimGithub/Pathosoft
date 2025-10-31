@@ -1,0 +1,132 @@
+/* ======= Select2 Custom Styling for Lab Theme ======= */
+
+
+/* Base container styling */
+
+.select2-container--bootstrap4 .select2-selection {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: 45px !important;
+    padding: 0.4rem 0.9rem !important;
+    border-radius: 10px !important;
+    border: 1px solid #d6d6e8 !important;
+    background-color: #fff !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+}
+
+
+/* Focus/Active effect */
+
+.select2-container--bootstrap4.select2-container--focus .select2-selection {
+    border-color: #8b46ff !important;
+    box-shadow: 0 0 6px rgba(139, 70, 255, 0.3);
+}
+
+
+/* Text inside select */
+
+.select2-container--bootstrap4 .select2-selection__rendered {
+    display: inline-block !important;
+    color: #2c2c2c !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: calc(100% - 35px);
+}
+
+
+/* Dropdown arrow and clear icon alignment */
+
+.select2-container--bootstrap4 .select2-selection__arrow,
+.select2-container--bootstrap4 .select2-selection__clear {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+    margin-left: 8px !important;
+    color: #7a7a7a !important;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.select2-container--bootstrap4 .select2-selection__clear:hover,
+.select2-container--bootstrap4 .select2-selection__arrow:hover {
+    color: #8b46ff !important;
+}
+
+
+/* Dropdown popup styling */
+
+.select2-container .select2-dropdown {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden !important;
+    animation: dropdownFade 0.15s ease-in-out;
+}
+
+
+/* Dropdown items */
+
+.select2-results__option {
+    padding: 10px 12px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500;
+    color: #333;
+    transition: background 0.2s ease-in-out;
+}
+
+.select2-results__option--highlighted {
+    background-color: #8b46ff !important;
+    color: #fff !important;
+}
+
+
+/* Search field inside dropdown */
+
+.select2-container--bootstrap4 .select2-search--dropdown .select2-search__field {
+    border-radius: 8px !important;
+    padding: 6px 10px !important;
+    border: 1px solid #ccc !important;
+    margin-bottom: 6px !important;
+}
+
+
+/* For multi-select tags */
+
+.select2-container--bootstrap4 .select2-selection--multiple {
+    flex-wrap: wrap;
+    min-height: 45px !important;
+    padding: 0.3rem 0.7rem !important;
+}
+
+.select2-container--bootstrap4 .select2-selection__choice {
+    background: #8b46ff !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 4px 8px !important;
+    margin: 2px 4px !important;
+    font-size: 0.85rem !important;
+}
+
+
+/* Smooth fade animation */
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

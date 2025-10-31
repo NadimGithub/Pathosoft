@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24 HRS Login</title>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body>
+    <div class="background"></div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-image">
+                <img src="{% static 'images/lab.png' %}" alt="Lab Illustration">
+            </div>
+            <div class="login-form">
+                <h2>Welcome Back</h2>
+                <p>Sign in to continue to 24 HRS Lab</p>
+                <form method="post">
+                     {% csrf_token %}
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" placeholder="username_or_email" name="username_or_email" required>
+                    </div>
+                    <div class="input-group password-group">
+
+                        <input type="password" placeholder="Password" id="password" name="password" required>
+                        <i class="fa-solid fa-eye" id="togglePassword"></i>
+                    </div>
+                    <button type="submit">Login</button>
+                    <p class="switch-page">Don't have an account? <a href="{% url 'register' %}">Sign Up</a> <a href="{% url 'forgot_password' %}">Forgot Password?</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="js/login.js"></script>
+</body>
+
+</html>
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+<h2>Login</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+</form>
+<br>
+<a href="{% url 'register' %}">Register User</a> |
+<a href="{% url 'forgot_password' %}">Forgot Password?</a>
+</body>
+</html> -->
