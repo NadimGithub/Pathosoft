@@ -1,0 +1,80 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Update Method{% endblock %} {% block content %}
+
+<!-- ======================== MAIN CONTAINER ======================== -->
+
+<link rel="stylesheet" href="{% static 'css/form-style.css' %}">
+
+<div class="container-fluid my-5 d-flex justify-content-center">
+
+    <!-- ===== Method Card ===== -->
+    <div class="card lab-card shadow-lg border-0 rounded-4 w-90">
+
+        <!-- ===== Card Header ===== -->
+        <div class="card-header d-flex align-items-center justify-content-between rounded-top-4">
+            <h4 class="mb-0 text-white">
+                <i class="fa-solid fa-pen-to-square me-2"></i> Update Method
+            </h4>
+            <a href="{% url 'method_list' %}" class="btn btn-primary btn-sm fw-semibold rounded-pill px-3 hover-glow">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+        <!-- ===== Card Body: Form Section ===== -->
+        <div class="card-body p-4">
+            <form method="post" class="row g-4">
+                {% csrf_token %}
+
+                <!-- Method Name -->
+                <div class="col-md-6">
+                    <label for="method_name" class="form-label fw-semibold">Method Name</label>
+                    <input type="text" id="method_name" name="method_name" value="{{ method.method_name }}" class="form-control shadow-sm" placeholder="Enter Method Name" required>
+                </div>
+
+                <!-- Formula -->
+                <div class="col-md-6">
+                    <label for="formula" class="form-label fw-semibold">Formula</label>
+                    <input type="text" id="formula" name="formula" value="{{ method.formula }}" class="form-control shadow-sm" placeholder="Enter Formula" required>
+                </div>
+
+                <!-- Description -->
+                <div class="col-12">
+                    <label for="method_description" class="form-label fw-semibold">Description</label>
+                    <textarea id="method_description" name="method_description" class="form-control shadow-sm" rows="3" placeholder="Enter Description">{{ method.method_description }}</textarea>
+                </div>
+
+                <!-- Test -->
+                <!-- <div class="col-md-3">
+                    <label for="test" class="form-label fw-semibold">Test</label>
+                    <select id="test" name="test" class="form-select shadow-sm" required>
+                        <option value="">-- Select Test --</option>
+                        {% for test in tests %}
+                            <option value="{{ test.test_id }}" {% if method.test.test_id == test.test_id %}selected{% endif %}>{{ test.test_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div> -->
+
+                <!-- Status -->
+                <!-- <div class="col-md-3">
+                    <label for="status" class="form-label fw-semibold">Status</label>
+                    <select id="status" name="status" class="form-select shadow-sm" required>
+                        <option value="Active" {% if method.status == 'Active' %}selected{% endif %}>Active</option>
+                        <option value="Inactive" {% if method.status == 'Inactive' %}selected{% endif %}>Inactive</option>
+                    </select>
+                </div> -->
+
+                <!-- Buttons -->
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn first px-5 py-2 rounded-pill fw-semibold">
+                        <i class="fa-solid fa-rotate me-2"></i> Update Method
+                    </button>
+                    <a href="{% url 'method_list' %}" class="btn btn-secondary px-5 py-2 rounded-pill fw-semibold ms-2">
+                        <i class="fa-solid fa-xmark me-2"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

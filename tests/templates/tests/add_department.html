@@ -1,0 +1,53 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Add Department{% endblock %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/form-style.css' %}">
+
+<div class="container-fluid my-5 d-flex justify-content-center">
+
+    <!-- ===== Department Card ===== -->
+    <div class="card lab-card shadow-lg border-0 rounded-4 w-90">
+
+        <!-- ===== Card Header ===== -->
+        <div class="card-header d-flex align-items-center justify-content-between rounded-top-4">
+            <h4 class="mb-0 text-white">
+                <i class="fa-solid fa-building me-2"></i> Add Department
+            </h4>
+            <a href="{% url 'department_list' %}" class="btn btn-primary btn-sm design fw-semibold rounded-pill px-3 hover-glow">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+        <!-- ===== Card Body ===== -->
+        <div class="card-body p-4">
+            <form method="POST" class="row g-4">
+                {% csrf_token %}
+
+                <!-- Department Name -->
+                <div class="col-md-6">
+                    <label for="department_name" class="form-label fw-semibold">Department Name</label> {{ form.department_name }}
+                </div>
+
+                <!-- Lab -->
+                <!-- <div class="col-md-6">
+          <label for="lab" class="form-label fw-semibold">Select Lab</label>
+          {{ form.lab }}
+        </div> -->
+
+                <!-- Status -->
+                <div class="col-md-6 d-flex align-items-center mt-5">
+                    <button type="submit" class="btn first px-5 py-2 rounded-pill fw-semibold submit-btn">
+            <i class="bi bi-save me-2"></i> Save Department
+          </button>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-12 text-center mt-4">
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

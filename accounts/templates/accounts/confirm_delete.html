@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Confirm Delete User{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-body text-center">
+        <div class="text-center mb-5">
+            <h2>Are you sure you want to delete user: {{ user.username }}?</h2>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+           
+           <a href="{% url 'view_users' %}"><button type="button" class="btn btn-primary"> Cancel</button></a>
+        </form>
+    </div>
+    </div>
+</div>
+{% endblock %}
+

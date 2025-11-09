@@ -1,0 +1,728 @@
+ERROR 2025-11-07 17:53:16,510 log 269188 272612 Internal Server Error: /doctor/doctor-ledger/1/add-transaction/
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\doctor\views.py", line 245, in add_transaction
+    "form": form,
+UnboundLocalError: local variable 'form' referenced before assignment
+ERROR 2025-11-07 17:59:31,739 views 283876 284352 Error editing patient 1: name 'difference' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\patient\views.py", line 252, in edit_patient
+    ledger.total_commission += difference
+NameError: name 'difference' is not defined
+ERROR 2025-11-07 18:46:31,486 views 83068 80152 Error creating patient: UNIQUE constraint failed: doctor_doctorledger.doctor_id
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\query.py", line 918, in get_or_create
+    return self.get(**kwargs), False
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+doctor.models.DoctorLedger.DoesNotExist: DoctorLedger matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+sqlite3.IntegrityError: UNIQUE constraint failed: doctor_doctorledger.doctor_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\patient\views.py", line 140, in add_patient
+    ledger, _ = DoctorLedger.objects.get_or_create(doctor=doctor,patient = patient.patient_id)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\query.py", line 925, in get_or_create
+    return self.create(**params), True
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\query.py", line 660, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\query.py", line 1810, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+django.db.utils.IntegrityError: UNIQUE constraint failed: doctor_doctorledger.doctor_id
+ERROR 2025-11-07 19:17:12,327 views 131988 132872 Error creating doctor: NOT NULL constraint failed: doctor_doctor.lab_id
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+sqlite3.IntegrityError: NOT NULL constraint failed: doctor_doctor.lab_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\doctor\views.py", line 31, in add_doctor
+    doctor.save()
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\query.py", line 1810, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+django.db.utils.IntegrityError: NOT NULL constraint failed: doctor_doctor.lab_id
+ERROR 2025-11-07 19:53:15,422 views 131988 197568 Error updating test ID 12: 'TestMaster' object has no attribute 'id'
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\tests\views.py", line 358, in update_test
+    logger.info(f"Test updated successfully - ID: {updated_test.id}, Name: {updated_test.test_name}")
+AttributeError: 'TestMaster' object has no attribute 'id'
+ERROR 2025-11-07 19:58:02,838 views 131988 197568 Error updating test ID 19: 'TestMaster' object has no attribute 'id'
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\Project\Pathosoft v 1.2.16\tests\views.py", line 358, in update_test
+    logger.info(f"Test updated successfully - ID: {updated_test.id}, Name: {updated_test.test_name}")
+AttributeError: 'TestMaster' object has no attribute 'id'
+ERROR 2025-11-07 22:10:48,188 views 4876 12968 Error creating patient: ['“” value must be a decimal number.']
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\__init__.py", line 1817, in to_python
+    decimal_value = decimal.Decimal(value)
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v 1.2.18\patient\views.py", line 82, in add_patient
+    patient = PatientMaster.objects.create(
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\query.py", line 665, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\query.py", line 1873, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    for sql, params in self.as_sql():
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\sql\compiler.py", line 1804, in as_sql
+    value_rows = [
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\sql\compiler.py", line 1805, in <listcomp>
+    [
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\sql\compiler.py", line 1806, in <listcomp>
+    self.prepare_value(field, self.pre_save_val(field, obj))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\sql\compiler.py", line 1741, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\__init__.py", line 1012, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\__init__.py", line 1833, in get_db_prep_value
+    value = super().get_db_prep_value(value, connection, prepared)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\__init__.py", line 1005, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\__init__.py", line 1840, in get_prep_value
+    return self.to_python(value)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\__init__.py", line 1819, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“” value must be a decimal number.']
+ERROR 2025-11-07 22:18:20,868 views 4500 11380 Error creating patient: Field 'weight' expected a number but got ''.
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: ''
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v 1.2.18\patient\views.py", line 82, in add_patient
+    patient = PatientMaster.objects.create(
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\query.py", line 665, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\query.py", line 1873, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    for sql, params in self.as_sql():
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\sql\compiler.py", line 1804, in as_sql
+    value_rows = [
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\sql\compiler.py", line 1805, in <listcomp>
+    [
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\sql\compiler.py", line 1806, in <listcomp>
+    self.prepare_value(field, self.pre_save_val(field, obj))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\sql\compiler.py", line 1741, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\__init__.py", line 1012, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\__init__.py", line 2135, in get_db_prep_value
+    value = super().get_db_prep_value(value, connection, prepared)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\__init__.py", line 1005, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+ValueError: Field 'weight' expected a number but got ''.
+ERROR 2025-11-07 22:56:57,200 views 12344 5596 Dashboard error: The 'profile_image' attribute has no file associated with it.
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 890, in _resolve_lookup
+    raise TypeError
+TypeError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v 1.2.18\accounts\views.py", line 110, in dashboard
+    return render(request, "dashboard.html", {"context": context})
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1075, in render
+    output = self.filter_expression.resolve(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 722, in resolve
+    obj = self.var.resolve(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 854, in resolve
+    value = self._resolve_lookup(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 901, in _resolve_lookup
+    current = getattr(current, bit)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\files.py", line 69, in url
+    self._require_file()
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\files.py", line 44, in _require_file
+    raise ValueError(
+ValueError: The 'profile_image' attribute has no file associated with it.
+ERROR 2025-11-07 22:57:09,177 views 12344 5596 Dashboard error: The 'profile_image' attribute has no file associated with it.
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 890, in _resolve_lookup
+    raise TypeError
+TypeError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v 1.2.18\accounts\views.py", line 110, in dashboard
+    return render(request, "dashboard.html", {"context": context})
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1075, in render
+    output = self.filter_expression.resolve(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 722, in resolve
+    obj = self.var.resolve(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 854, in resolve
+    value = self._resolve_lookup(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 901, in _resolve_lookup
+    current = getattr(current, bit)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\files.py", line 69, in url
+    self._require_file()
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\files.py", line 44, in _require_file
+    raise ValueError(
+ValueError: The 'profile_image' attribute has no file associated with it.
+ERROR 2025-11-07 23:00:07,220 views 12344 12780 Dashboard error: The 'profile_image' attribute has no file associated with it.
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 890, in _resolve_lookup
+    raise TypeError
+TypeError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v 1.2.18\accounts\views.py", line 110, in dashboard
+    return render(request, "dashboard.html", {"context": context})
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 1075, in render
+    output = self.filter_expression.resolve(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 722, in resolve
+    obj = self.var.resolve(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 854, in resolve
+    value = self._resolve_lookup(context)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\template\base.py", line 901, in _resolve_lookup
+    current = getattr(current, bit)
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\files.py", line 69, in url
+    self._require_file()
+  File "D:\Projects\Pathosoft v 1.2.18\env\lib\site-packages\django\db\models\fields\files.py", line 44, in _require_file
+    raise ValueError(
+ValueError: The 'profile_image' attribute has no file associated with it.
+ERROR 2025-11-08 18:30:50,417 views 292116 65012 Error updating test 2: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 575, in update_test_ajax
+    massages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 18:30:50,669 views 292116 65012 Error updating test 2: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 575, in update_test_ajax
+    massages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 18:30:50,909 views 292116 65012 Error updating test 2: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 575, in update_test_ajax
+    massages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 18:30:51,067 views 292116 65012 Error updating test 2: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 575, in update_test_ajax
+    massages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 18:30:51,425 views 292116 65012 Error updating test 2: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 575, in update_test_ajax
+    massages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 18:30:52,280 views 292116 65012 Error updating test 2: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 575, in update_test_ajax
+    massages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 18:30:52,747 views 292116 65012 Error updating test 2: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 575, in update_test_ajax
+    massages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 18:31:13,243 views 292116 65012 AJAX test creation failed: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 537, in add_test_ajax
+    massages.success(request, f"{test.test_id} - {test.test_name} added successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 18:33:56,055 views 292116 65012 AJAX test creation failed: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 537, in add_test_ajax
+    massages.success(request, f"{test.test_id} - {test.test_name} added successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 18:33:56,069 views 292116 311240 AJAX test creation failed: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 537, in add_test_ajax
+    massages.success(request, f"{test.test_id} - {test.test_name} added successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 18:35:10,553 views 292116 311496 AJAX test creation failed: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 537, in add_test_ajax
+    massages.success(request, f"{test.test_id} - {test.test_name} added successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 18:35:10,571 views 292116 312528 AJAX test creation failed: name 'massages' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 537, in add_test_ajax
+    massages.success(request, f"{test.test_id} - {test.test_name} added successfully  !" )
+NameError: name 'massages' is not defined
+ERROR 2025-11-08 19:35:39,950 log 10988 142968 Internal Server Error: /accounts/doctor/search/
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\accounts\views.py", line 316, in doctor_search
+    doctors = Doctor.objects.filter(
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\query.py", line 1438, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\query.py", line 1456, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\query.py", line 1466, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1546, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1577, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1405, in build_filter
+    return self._add_q(
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1577, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1427, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1237, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1726, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'doctor_id' into field. Choices are: address, commission_percent, doctor_name, doctorcommission, doctorledger, doctortransaction, email, hospital_name, id, lab, lab_id, mobile_number, patientmaster, status
+ERROR 2025-11-08 19:35:44,017 log 10988 142968 Internal Server Error: /accounts/doctor/search/
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\accounts\views.py", line 316, in doctor_search
+    doctors = Doctor.objects.filter(
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\query.py", line 1438, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\query.py", line 1456, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\query.py", line 1466, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1546, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1577, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1405, in build_filter
+    return self._add_q(
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1577, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1427, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1237, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\env\lib\site-packages\django\db\models\sql\query.py", line 1726, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'doctor_id' into field. Choices are: address, commission_percent, doctor_name, doctorcommission, doctorledger, doctortransaction, email, hospital_name, id, lab, lab_id, mobile_number, patientmaster, status
+ERROR 2025-11-08 19:35:57,532 views 10988 142968 Backup failed: [WinError 3] The system cannot find the path specified: 'G:\\'
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\AppData\Local\Programs\Python\Python38\lib\pathlib.py", line 1266, in mkdir
+    self._accessor.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'G:\\My Drive\\Pathsoft_backup'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\AppData\Local\Programs\Python\Python38\lib\pathlib.py", line 1266, in mkdir
+    self._accessor.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'G:\\My Drive'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\accounts\views.py", line 578, in take_backup
+    GOOGLE_DRIVE_FOLDER.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Lenovo\AppData\Local\Programs\Python\Python38\lib\pathlib.py", line 1270, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Lenovo\AppData\Local\Programs\Python\Python38\lib\pathlib.py", line 1270, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Lenovo\AppData\Local\Programs\Python\Python38\lib\pathlib.py", line 1266, in mkdir
+    self._accessor.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'G:\\'
+ERROR 2025-11-08 21:16:28,075 views 306232 55436 Error updating test 25: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 575, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-08 21:16:33,109 views 306232 55436 Error updating test 25: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 575, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-08 21:16:38,476 views 306232 55436 Error updating test 25: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 575, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-08 21:16:43,493 views 306232 55436 Error updating test 25: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\tests\views.py", line 575, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-08 21:41:12,251 views 306232 249008 Backup failed: [WinError 3] The system cannot find the path specified: 'G:\\'
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\AppData\Local\Programs\Python\Python38\lib\pathlib.py", line 1266, in mkdir
+    self._accessor.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'G:\\My Drive\\Pathsoft_backup'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\AppData\Local\Programs\Python\Python38\lib\pathlib.py", line 1266, in mkdir
+    self._accessor.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'G:\\My Drive'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\Desktop\nadim\Pathosoft v 1.2.19\accounts\views.py", line 578, in take_backup
+    GOOGLE_DRIVE_FOLDER.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Lenovo\AppData\Local\Programs\Python\Python38\lib\pathlib.py", line 1270, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Lenovo\AppData\Local\Programs\Python\Python38\lib\pathlib.py", line 1270, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Lenovo\AppData\Local\Programs\Python\Python38\lib\pathlib.py", line 1266, in mkdir
+    self._accessor.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'G:\\'
+ERROR 2025-11-09 15:24:29,852 log 11432 2540 Internal Server Error: /accounts/login/
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+sqlite3.OperationalError: no such table: accounts_customuser
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Projects\Pathosoft v1.2.20\accounts\views.py", line 152, in login_user
+    user = authenticate(request, username=username_or_email, password=password)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\views\decorators\debug.py", line 75, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\contrib\auth\__init__.py", line 114, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\contrib\auth\backends.py", line 65, in authenticate
+    user = UserModel._default_manager.get_by_natural_key(username)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\contrib\auth\base_user.py", line 37, in get_by_natural_key
+    return self.get(**{self.model.USERNAME_FIELD: username})
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 629, in get
+    num = len(clone)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+django.db.utils.OperationalError: no such table: accounts_customuser
+ERROR 2025-11-09 16:37:58,169 log 8644 4860 Internal Server Error: /tests/update_test_compulsory/
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 592, in update_test_compulsory
+    test = TestMaster.objects.get(id=test_id)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 619, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 1493, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 1511, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 1518, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\sql\query.py", line 1646, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\sql\query.py", line 1678, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\sql\query.py", line 1526, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\sql\query.py", line 1333, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\sql\query.py", line 1806, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'id' into field. Choices are: compulsory, cost, lab, lab_id, lower_range, methods, methods_id, notes, patienttest, status, test_group, test_group_id, test_id, test_name, units, upper_range
+ERROR 2025-11-09 17:26:13,902 views 8176 11320 Error updating test 1: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:26:44,247 views 8176 11320 Error updating test 1: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:00,573 views 8176 7852 Error updating test 52: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:00,934 views 8176 7852 Error updating test 52: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:01,230 views 8176 7852 Error updating test 52: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:02,549 views 8176 7852 Error updating test 52: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:02,831 views 8176 7852 Error updating test 52: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:03,167 views 8176 7852 Error updating test 52: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:13,233 views 8176 7852 Error updating test 2: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:29,409 views 8176 7852 Error updating test 2: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:29,697 views 8176 7852 Error updating test 2: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:30,322 views 8176 7852 Error updating test 2: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:31,397 views 8176 7852 Error updating test 2: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:32,497 views 8176 7852 Error updating test 2: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 17:28:32,976 views 8176 7852 Error updating test 2: name 'test_name' is not defined
+Traceback (most recent call last):
+  File "D:\Projects\Pathosoft v1.2.20\tests\views.py", line 576, in update_test_ajax
+    messages.success(request, f"{test_id} - {test_name} updated successfully  !" )
+NameError: name 'test_name' is not defined
+ERROR 2025-11-09 20:06:05,815 log 10480 2872 Internal Server Error: /accounts/change-password/
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\Projects\Pathosoft v1.2.20\accounts\views.py", line 289, in change_password
+    update_session_auth_hash(request, user)
+NameError: name 'update_session_auth_hash' is not defined

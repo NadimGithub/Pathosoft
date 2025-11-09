@@ -1,0 +1,111 @@
+.text-center.mt-4 {
+    margin-top: 2rem !important;   /* adds clear top spacing */
+    display: block !important;     /* override flex alignment issue */
+    width: 100%;   
+                    /* ensures full width alignment */
+} 
+/* ==== Add Test Panel ==== */
+.test-panel {
+    position: fixed;
+    top: 0;
+    right: -600px;
+    width: 600px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -3px 0 15px rgba(0, 0, 0, 0.3);
+    z-index: 1056;
+    overflow-y: auto;
+    transition: right 0.4s ease-in-out;
+    border-left: 4px solid #0d6efd;
+    display: flex;
+    flex-direction: column;
+}
+
+.test-panel.active {
+    right: 0;
+}
+
+.test-panel-header {
+    background: linear-gradient(135deg, #09123b, #3f48ad, #3579b8);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.test-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 50px;
+}
+
+.test-panel .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+/* ==== Overlay ==== */
+.test-panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1055;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.test-panel-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* ==== Responsive Design ==== */
+
+/* Tablet view (≤992px) */
+@media (max-width: 992px) {
+    .test-panel {
+        width: 80%;
+        right: -80%;
+        border-left-width: 3px;
+    }
+    .test-panel.active {
+        right: 0;
+    }
+}
+
+/* Mobile view (≤768px) */
+@media (max-width: 768px) {
+    .test-panel {
+        width: 100%;
+        right: -100%;
+        border-left-width: 0;
+        border-radius: 0;
+    }
+    .test-panel-header h5 {
+        font-size: 1.1rem;
+    }
+    .test-panel-body {
+        padding: 1rem;
+    }
+    .test-panel.active {
+        right: 0;
+    }
+}
+
+/* Small mobile (≤480px) */
+@media (max-width: 480px) {
+    .test-panel-header {
+        padding: 0.8rem 1rem;
+    }
+    .test-panel-body input,
+    .test-panel-body select,
+    .test-panel-body textarea {
+        font-size: 0.9rem;
+    }
+    .btn {
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
+}
+}

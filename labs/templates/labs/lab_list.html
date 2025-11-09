@@ -1,0 +1,94 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Lab List{% endblock %} {% block content %}
+<link rel="stylesheet" href="{% static 'css/lab_list.css' %}">
+
+<div class="container-fluid my-5 d-flex justify-content-center">
+    <div class="card shadow-lg border-0 rounded-4 w-90">
+
+
+
+
+        <div class="card-header">
+            <h4><i class="fa-solid fa-user-doctor me-2"></i>Lab List</h4>
+
+            <!-- ✅ Simple Django Search Form -->
+            <form method="get" class="search-bar position-relative d-flex align-items-center">
+                <input type="text" name="q" id="docsearch" placeholder="Search labs..." autocomplete="off" value="{{ query }}" />
+                <button type="submit" class="btn  btn-sm ms-2 ps-4">
+            <i class="fa fa-search" style="color: white;"></i>
+
+        </button>
+            </form>
+
+            <a href="{% url 'lab_create' %}" class="btn btn-primary btn-sm">+ Add Lab</a>
+        </div>
+
+        <!-- ✅ TABLE -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Lab ID</th>
+                        <th>Lab Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lab in labs %}
+                    <tr>
+                        <td>{{ lab.lab_id }}</td>
+                        <td>{{ lab.lab_name }}</td>
+                        <td>{{ lab.email }}</td>
+                        <td>{{ lab.contact_no }}</td>
+                        <td>{{ lab.status }}</td>
+                        <td>{{ lab.created_date|date:"d M Y" }}</td>
+                        <td>
+                            <a href="{% url 'lab_update' lab.lab_id %}" class="btn btn-warning btn-sm"> <i class="fa fa-edit"></i></a>
+                            <a href="{% url 'lab_delete' lab.lab_id %}" class="btn btn-danger btn-sm"> <i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">No labs found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ✅ PAGINATION -->
+        {% if labs.has_other_pages %}
+        <div class="d-flex justify-content-center my-3">
+            <ul class="pagination">
+                {% if labs.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ labs.previous_page_number }}">&laquo;</a>
+                </li>
+                {% endif %} {% for num in labs.paginator.page_range %} {% if labs.number == num %}
+                <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %} {% endfor %} {% if labs.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ labs.next_page_number }}">&raquo;</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Restore Backup{% endblock %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/form-style.css' %}">
+
+<div class="container-fluid my-5 d-flex justify-content-center">
+    <div class="card lab-card shadow-lg border-0 rounded-4 w-90">
+        <!-- Card Header -->
+        <div class="card-header d-flex align-items-center justify-content-between rounded-top-4">
+            <h4 class="mb-0 text-white">
+                <i class="fas fa-database me-2"></i> Restore Database
+            </h4>
+            <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm fw-semibold rounded-pill px-3 ">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body p-4">
+            <!-- Warning Alert -->
+            <div class="alert alert-danger mb-4">
+                <h5 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>Important Warning</h5>
+                <hr>
+                <p class="mb-0">Restoring a backup will <strong>completely replace</strong> your current database. This action cannot be undone. Please ensure you have backed up any important current data before proceeding.</p>
+            </div>
+
+            <!-- Instructions -->
+            <div class="card mb-4 border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Restore Options</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Latest Backup Option -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold"><i class="fas fa-clock me-2"></i>Option 1: Restore Latest Backup</h6>
+                        <p class="text-muted ms-4 mb-3">Restore your database to the most recent backup point.</p>
+                        <form action="{% url 'restore_backup' %}" method="post" class="ms-4">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning rounded-pill px-4">
+                                <i class="fas fa-undo me-2"></i>Restore Latest Backup
+                            </button>
+                        </form>
+                    </div>
+
+                    <hr>
+
+                    <!-- Upload File Option -->
+                    <div class="mt-4">
+                        <h6 class="fw-bold"><i class="fas fa-upload me-2"></i>Option 2: Restore from File</h6>
+                        <p class="text-muted ms-4 mb-3">Upload a specific backup file to restore.</p>
+                        <form action="{% url 'restore_from_upload' %}" method="POST" enctype="multipart/form-data" class="ms-4">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="dbfile" class="form-label">Select Database File (.sqlite3)</label>
+                                <input type="file" name="dbfile" accept=".sqlite3" class="form-control form-control-lg" required>
+                                <div class="form-text">Only .sqlite3 files are supported</div>
+                            </div>
+                            <button type="submit" class="btn btn-success rounded-pill px-4">
+                                <i class="fas fa-cloud-upload-alt me-2"></i>Upload & Restore
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {% if messages %}
+            <div class="mt-4">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Card Footer -->
+        <div class="card-footer bg-light p-3 rounded-bottom-4">
+            <div class="text-muted text-center">
+                <small><i class="fas fa-shield-alt me-1"></i>Make sure to keep your original backup files safe</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

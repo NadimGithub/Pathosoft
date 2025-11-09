@@ -1,0 +1,706 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Edit Patient{% endblock %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/form-style.css' %}">
+<link rel="stylesheet" href="{% static 'css/toggle.css' %}">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="container-fluid my-5 d-flex justify-content-center">
+    <div class="card shadow-lg border-0 rounded-4 w-90">
+        <!-- Header -->
+        <div class="card-header d-flex align-items-center justify-content-between rounded-top-4">
+            <h4 class="mb-0 text-white">
+                <i class="fa-solid fa-user-pen me-2"></i> Edit Patient
+            </h4>
+            <a href="{% url 'view_patients' %}" class="btn btn-primary design btn-sm fw-semibold rounded-pill px-3 hover-glow">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+        <div class="card-body p-4">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="patient_id" value="{{ patient.patient_id }}">
+
+                <!-- Patient Info Row -->
+                <div class="row g-4 mb-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Title</label>
+                        <input type="text" name="title" class="form-control shadow-sm" value="{{ patient.title }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Patient Name</label>
+                        <input type="text" name="patient_name" class="form-control shadow-sm" required value="{{ patient.patient_name }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold">Gender</label>
+                        <select name="gender" class="form-select custom-dropdown">
+                        <option value="Male" {% if patient.gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if patient.gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if patient.gender == 'Other' %}selected{% endif %}>Other</option>
+                    </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold">Age</label>
+                        <input type="number" name="age" class="form-control shadow-sm" value="{{ patient.age }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold">Mobile No</label>
+                        <input type="number" name="mobile_number" class="form-control shadow-sm" value="{{ patient.mobile_number }}">
+                   </div>
+                     <div class="col-md-3">
+                    <label class="form-label fw-semibold">Blood Group</label>
+                    <select name="blood_group" class="form-select custom-dropdown">
+                
+                        {% if patient.blood_group %} 
+                        <option value="{{ patient.blood_group }}" selected>{{ patient.blood_group }}</option>
+                         {% endif %}
+                        <option value="Unknown">Unknown</option>     
+                        <option value="A+">A Rh Positive</option>
+                        <option value="A-">A Rh Negative</option>
+                        <option value="B+">B Rh Positive</option>
+                        <option value="B-">B Rh Negative</option>
+                        <option value="AB+">AB Rh Positive</option>
+                        <option value="AB-">AB Rh Negative</option>
+                        <option value="O+">O Rh Positive</option>
+                        <option value="O-">O Rh Negative</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-9">
+                        <label class="form-label fw-semibold">Address</label>
+                        <textarea name="address" class="form-control shadow-sm" rows="1" placeholder="Enter Address">{{ patient.address }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Doctor and Date Row -->
+                <div class="row g-4 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Ref. Doctor</label>
+                        <select name="doctor" class="form-select custom-dropdown">
+                        <option value="0" {% if not patient.doctor %}selected{% endif %}>My Self</option>
+                        {% for d in doctors %}
+                        <option value="{{ d.id }}" {% if patient.doctor.id == d.id %}selected{% endif %}>{{ d.doctor_name }}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Sample Date</label>
+                        <input type="date" name="sample_date" class="form-control shadow-sm" value="{{ patient.sample_date|date:'Y-m-d' }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Reporting Date</label>
+                        <input type="date" name="reporting_date" class="form-control shadow-sm" value="{{ patient.reporting_date|date:'Y-m-d' }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold">Weight</label>
+                        <input type="number" step="0.01" name="weight" class="form-control shadow-sm" value="{{ patient.weight }}">
+                    </div>
+                </div>
+
+                <!-- Tests and Billing -->
+                <div class="row">
+                    <!-- Test Group List -->
+                    <div class="col-md-3">
+                        <div class="bg-light p-3 rounded shadow-sm h-100 d-flex flex-column">
+                            <h6 class="text-primary fw-bold mb-2">Test Group List</h6>
+                            <input type="text" id="searchGroup" class="form-control mb-2" placeholder="Search group...">
+                            <div style="flex: 1; overflow-y: auto;">
+                                <table class="table table-bordered table-sm mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Group Name</th>
+                                        <th>Select</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="groupTable">
+                                    {% for g in groups %}
+                                    <tr>
+                                        <td>{{ g.group_name }}</td>
+                                        <td>
+                                            <input type="checkbox" class="group-check" data-id="{{ g.id }}" {% if g.id in selected_group_ids %}checked{% endif %}>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Test & Billing Section -->
+                    <div class="col-md-9">
+                        <!-- Choose Tests -->
+                        <div class="bg-light p-3 rounded shadow-sm mb-3">
+                            <h6 class="text-primary fw-bold mb-2">Choose Tests</h6>
+                            <input type="text" id="searchTests" class="form-control mb-2" placeholder="Search tests...">
+                            <div style="max-height: 300px; overflow-y: auto;">
+                            <!-- <table class="table table-bordered table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Test Name</th>
+                                        <th>Normal Range</th>
+                                        <th>Units</th>
+                                        <th>Cost (₹)</th>
+                                        <th>Compulsory</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="testTable">
+                                    {% for test in tests %}
+                                    <tr id="test-row-{{ test.test_id }}">
+                                       
+                                        {% with lr=test.lower_range|default_if_none:"" ur=test.upper_range|default_if_none:"" %}
+                                        <td><input {% if test.test_id in selected_test_ids %}checked{% endif %} type="checkbox" class="test-check" data-id="{{ test.test_id }}" data-name="{{ test.test_name }}" data-range="{% if lr or ur %}{{ lr }}-{{ ur }}{% else %}{% endif %}" data-units="{{ test.units }}" data-cost="{{ test.cost }}"></td>
+                                        <td>{{ test.test_name }}</td>
+                                        <td>{% if lr or ur %}{{ lr }}-{{ ur }}{% else %}-{% endif %}</td>
+                                        {% endwith %}
+                                         <td>{{ test.units }}</td>
+                                         <td>{{ test.cost }}</td>
+                                         <td>
+                                            <input 
+                                                type="checkbox" 
+                                                class="compulsory_chk" 
+                                                data-id="{{ test.test_id }}" 
+                                                {% if test.compulsory %}checked{% endif %}
+                                            >
+                                        </td>
+                                     </tr>
+                                    {% endfor %}
+                                </tbody>
+                                </table> -->
+                                
+                                <table id="testTable" class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Select</th>
+                                            <th>Test Name</th>
+                                            <th>Normal Range</th>
+                                            <th>Units</th>
+                                            <th>Cost</th>
+                                            <th>Compulsory</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <!-- Final Selected Tests -->
+                        <div class="bg-light p-3 rounded shadow-sm mb-3">
+                            <div class="d-flex justify-content-between align-items-center flex-nowrap">
+                                <h6 class="text-primary fw-bold mb-0 flex-grow-1">Final List of Selected Tests</h6>
+                                                           <!-- 🔘 Button to open Add Test Panel -->
+                        <button type="button" class="btn btn-sm first mb-2 rounded-pill px-3" onclick="openTestPanel()">
+                            <i class="fa-solid fa-plus me-1"></i> Add New Test
+                        </button>
+                            </div>
+                            <input type="text" id="searchFinalList" class="form-control mb-2" placeholder="Search selected tests...">
+                            <div style="max-height: 300px; overflow-y: auto;">
+                                <table class="table table-bordered table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Test Name</th>
+                                        <th>Normal Range</th>
+                                        <th>Units</th>
+                                        <th>Cost (₹)</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                               <tbody id="finalTable">
+                                    {% for t in selected_tests %}
+                                    <tr id="final-{{ t.test.test_id }}">
+                                        <td><input type="text" class="form-control form-control-sm test-name" data-id="{{ t.test.test_id }}" value="{{ t.test.test_name }}"></td>
+                                        <td><input type="text" class="form-control form-control-sm test-range" value="{{ t.test.lower_range }}-{{ t.test.upper_range }}"></td>
+                                        <td><input type="text" class="form-control form-control-sm test-units" value="{{ t.test.units }}"></td>
+                                       <td><input type="number" class="form-control form-control-sm test-cost" value="{{ t.test.cost }}" data-id="{{ t.test.test_id }}"></td>
+
+                                        <td><button type="button" class="btn btn-sm btn-danger del-row" data-id="{{ t.test.test_id }}" data-cost="{{ t.test.cost }}">X</button></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        <!-- Billing Details -->
+                        <div class="bg-light p-3 rounded shadow-sm mb-3">
+                            <h6 class="text-primary fw-bold mb-2">Billing Details</h6>
+                            <div class="row g-3">
+                                <div class="col-md-2"><label>Basic Amount</label><input type="text" id="basic_amount" name="basic_amount" readonly class="form-control shadow-sm" value="{{ patient.basic_amount }}"></div>
+                                <div class="col-md-2"><label>Extra Cost</label><input type="number" id="extra_cost" name="extra_cost" class="form-control shadow-sm" value="{{ patient.extra_cost }}"></div>
+                                <div class="col-md-2"><label>Discount</label><input type="number" id="discount" name="discount" class="form-control shadow-sm" value="{{ patient.discount }}"></div>
+                                <div class="col-md-2"><label>Total Amount</label><input type="text" id="total_amount" name="total_amount" readonly class="form-control shadow-sm" value="{{ patient.total_amount }}"></div>
+                                <div class="col-md-2"><label>Paid Amount</label><input type="number" id="paid_amount" name="paid_amount" class="form-control shadow-sm" value="{{ patient.paid_amount }}"></div>
+                                <div class="col-md-2"><label>Balance</label><input type="text" id="balance_amount" name="balance_amount" readonly class="form-control shadow-sm" value="{{ patient.balance_amount }}"></div>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn first rounded-pill me-2 px-4 py-2">
+                            <i class="fa-solid fa-rotate me-1"></i> Update
+                        </button>
+                            <a href="{% url 'print_receipt' patient.patient_id %}" target="_blank" class="btn btn-success rounded-pill me-2 px-4 py-2">
+                                <i class="fa-solid fa-print me-1"></i> Print
+                            </a>
+                            <a href="{% url 'view_patients' %}" class="btn btn-danger rounded-pill px-4 py-2">Cancel</a>
+                        </div>
+
+                        {% if message %}
+                        <div class="alert alert-success mt-3">{{ message }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <input type="hidden" name="tests" id="selected_tests_input" value="{{ selected_test_ids|join:',' }}">
+            </form>
+        </div>
+    </div>
+
+</div>
+<!-- ✅ Bootstrap Modal for Adding Test -->
+<div id="addTestPanel" class="test-panel shadow-lg">
+    <div class="test-panel-header d-flex justify-content-between align-items-center px-3 py-3 text-white">
+        <h5 class="mb-0"><i class="fa-solid fa-vial me-2"></i> Add New Test</h5>
+        <button type="button" class="btn-close btn-close-white" onclick="closeTestPanel()"></button>
+    </div>
+
+    <div class="test-panel-body p-3">
+        <form id="addTestForm">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-md-6 col-sm-12">
+                    <label class="form-label fw-semibold">Test Name</label>
+                    <input type="text" name="test_name" class="form-control" required>
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                    <label class="form-label fw-semibold">Test Group</label>
+                    <select name="test_group" class="form-select">
+                        <option value="">---------</option>
+                        {% for group in groups %}
+                        <option value="{{ group.id }}">{{ group.group_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                    <label class="form-label fw-semibold">Method</label>
+                    <select name="methods" class="form-select">
+                        <option value="">---------</option>
+                        {% for method in methods %}
+                        <option value="{{ method.method_id }}">{{ method.method_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                    <label class="form-label fw-semibold">Lower Range</label>
+                    <input type="number" step="0.01" name="lower_range" class="form-control">
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                    <label class="form-label fw-semibold">Upper Range</label>
+                    <input type="number" step="0.01" name="upper_range" class="form-control">
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                    <label class="form-label fw-semibold">Units</label>
+                    <input type="text" name="units" class="form-control">
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                    <label class="form-label fw-semibold">Cost (₹)</label>
+                    <input type="number" step="0.01" name="cost" class="form-control">
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Notes</label>
+                    <textarea name="notes" rows="2" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="submit" class="btn first rounded-pill px-4 me-2">Save Test</button>
+                <button type="button" class="btn btn-secondary rounded-pill px-4" onclick="closeTestPanel()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="testPanelOverlay" class="test-panel-overlay" onclick="closeTestPanel()"></div>
+
+<script src="{%static 'js/toggle.js' %}"></script>
+
+<div id="testPanelOverlay" class="test-panel-overlay" onclick="closeTestPanel()"></div>
+<script src="{%static 'offlinejs/jquery-3.6.0.min.js'%}"></script>
+
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+ <script>
+$(document).ready(function() {
+
+    // Handle group checkbox change
+    $(document).on("change", ".group-check", function() {
+        let groupId = $(this).data("id");
+        let isChecked = this.checked;
+
+        if (isChecked) {
+            // Allow only one group at a time (optional)
+            $(".group-check").not(this).prop("checked", false);
+
+            // Fetch tests for this group
+            $.get(`/patient/get-tests/${groupId}/`, function(tests) {
+                let testTable = $("#testTable");
+                testTable.empty(); // clear old rows
+
+                tests.forEach((test) => {
+                    let isCompulsory = (test.compulsory === true || test.compulsory === "True" || test.compulsory === 1);
+                    let checkedAttr = isCompulsory ? "checked" : "";
+
+                    testTable.append(`
+                        <tr id="test-row-${test.test_id}">
+                            <td>
+                                <input type="checkbox" class="test-check"
+                                    data-id="${test.test_id}"
+                                    data-name="${test.test_name}"
+                                    data-range="${test.normal_range || '-'}"
+                                    data-units="${test.units || '-'}"
+                                    data-cost="${test.cost || 0}"
+                                    ${isCompulsory ? "checked disabled" : ""}>
+                            </td>
+                            <td>${test.test_name}</td>
+                            <td>${test.normal_range || '-'}</td>
+                            <td>${test.units || '-'}</td>
+                            <td>${test.cost || 0}</td>
+                            <td><input type="checkbox" class="compulsory_chk" data-id="${test.test_id}" ${checkedAttr}></td>
+                        </tr>
+                    `);
+                });
+            });
+
+        } else {
+            // When unchecked, show all tests again
+            $.get(`/patient/get-tests/all/`, function(tests) {
+                let testTable = $("#testTable");
+                testTable.empty();
+
+                tests.forEach((test) => {
+                    let isCompulsory = (test.compulsory === true || test.compulsory === "True" || test.compulsory === 1);
+                    let checkedAttr = isCompulsory ? "checked" : "";
+
+                    testTable.append(`
+                        <tr id="test-row-${test.test_id}">
+                            <td>
+                                <input type="checkbox" class="test-check"
+                                    data-id="${test.test_id}"
+                                    data-name="${test.test_name}"
+                                    data-range="${test.normal_range || '-'}"
+                                    data-units="${test.units || '-'}"
+                                    data-cost="${test.cost || 0}"
+                                    ${isCompulsory ? "checked disabled" : ""}>
+                            </td>
+                            <td>${test.test_name}</td>
+                            <td>${test.normal_range || '-'}</td>
+                            <td>${test.units || '-'}</td>
+                            <td>${test.cost || 0}</td>
+                            <td><input type="checkbox" class="compulsory_chk" data-id="${test.test_id}" ${checkedAttr}></td>
+                        </tr>
+                    `);
+                });
+            });
+        }
+    });
+
+});
+</script>
+
+<script>
+    $(document).ready(function() {
+    // ✅ Handle New Test Save
+    $("#addTestForm").on("submit", function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "{% url 'add_test_ajax' %}",  // Django URL to handle new test
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                    $("#addTestModal").modal("hide");
+                    $("#addTestForm")[0].reset();
+                    alert("✅ Test added successfully!");
+                    closeTestPanel();
+                         }
+
+                        });
+                    });
+   
+    // ✅ Billing Calculation Function
+    function calculateTotal() {
+        let total = 0;
+        $(".cost-field").each(function() {
+            total += parseFloat($(this).val()) || 0;
+        });
+        $("#basic_amount").val(total.toFixed(2));
+        let discount = parseFloat($("#discount").val()) || 0;
+        $("#total_amount").val((total - discount).toFixed(2));
+    }
+});
+
+
+    let selectedTests = "{{ selected_test_ids|join:',' }}".split(',').filter(Boolean).map(Number);
+    let basicAmount = parseFloat($("#basic_amount").val()) || 0;
+
+    // Search functionality for test groups
+    $("#searchGroup").on("keyup", function() {
+        let value = $(this).val().toLowerCase();
+        $("#groupTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+    // Search functionality for tests
+    $("#searchTests").on("keyup", function() {
+        let value = $(this).val().toLowerCase();
+        $("#testTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+    // Search functionality for final list
+    $("#searchFinalList").on("keyup", function() {
+        let value = $(this).val().toLowerCase();
+        $("#finalTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+       $(document).on("change", ".group-check", function() {
+                    let groupId = $(this).data("id");
+                    let isChecked = this.checked;
+                    console.log("Group checkbox changed:", groupId, "Checked?", isChecked);
+
+                    $.get(`/patient/get-tests/${groupId}/`, (tests) => {
+                        console.log("AJAX GET /patient/get-tests/", tests);
+
+                        tests.forEach(test => {
+                            console.log("Processing test:", test.test_name, "Compulsory?", test.compulsory);
+
+                            // Determine if checkbox should be checked
+                            let isCompulsory = (test.compulsory === true || test.compulsory === "True" || test.compulsory === 1);
+                            console.log("isCompulsory evaluated to:", isCompulsory);
+
+                            // Add row to test table if not exists
+                            if ($("#test-row-" + test.test_id).length === 0) {
+                                let checkedAttr = isCompulsory ? 'checked' : '';
+                                $("#testTable").append(`
+                                    <tr id="test-row-${test.test_id}">
+                                        <td><input type="checkbox" class="test-check"
+                                                data-id="${test.test_id}"
+                                                data-name="${test.test_name}"
+                                                data-range="${test.normal_range || '-'}"
+                                                data-units="${test.units || '-'}"
+                                                data-cost="${test.cost || 0}"
+                                                ${isCompulsory ? 'checked disabled' : ''}></td>
+                                        <td>${test.test_name}</td>
+                                        <td>${test.normal_range || '-'}</td>
+                                        <td>${test.units || '-'}</td>
+                                        <td>${test.cost || 0}</td>
+                                        <td><input type="checkbox" class="compulsory_chk" data-id="${test.test_id}" ${checkedAttr}></td>
+                                    </tr>
+                                `);
+                                console.log("Added test-row for:", test.test_name);
+                            }
+
+                            // Auto-add compulsory tests to final table
+                            if (isCompulsory && $("#final-" + test.test_id).length === 0) {
+                                if (!selectedTests.includes(test.test_id)) selectedTests.push(test.test_id);
+                                $("#finalTable").append(`
+                                    <tr id="final-${test.test_id}">
+                                        <td><input type="text" class="form-control form-control-sm test-name" value="${test.test_name}" data-id="${test.test_id}"></td>
+                                        <td><input type="text" class="form-control form-control-sm test-range" value="${test.normal_range || '-'}"></td>
+                                        <td><input type="text" class="form-control form-control-sm test-units" value="${test.units || '-'}"></td>
+                                        <td><input type="number" step="0.01" class="form-control form-control-sm test-cost" value="${test.cost || 0}"></td>
+                                        <td><button type="button" class="btn btn-sm btn-danger del-row" data-id="${test.test_id}" data-cost="${test.cost || 0}">X</button></td>
+                                    </tr>
+                                `);
+                                console.log("Added compulsory test to final table:", test.test_name);
+                            }
+
+                            // If group unchecked, remove non-compulsory tests
+                            if (!isChecked) {
+                                $("#test-row-" + test.test_id).remove();
+                                if (!isCompulsory) {
+                                    $("#final-" + test.test_id).remove();
+                                    selectedTests = selectedTests.filter(x => x !== test.test_id);
+                                    console.log("Removed test:", test.test_name);
+                                }
+                            }
+                        });
+
+                        updateTotals();
+                    }).fail(function(xhr, status, error) {
+                        console.error("AJAX GET error:", status, error);
+                        console.log("Response text:", xhr.responseText);
+                    });
+                });
+    // Select test
+    $(document).on("change", ".test-check", function() {
+        let id = $(this).data("id");
+        let name = $(this).data("name");
+        let range = $(this).data("range") || "-";
+        let units = $(this).data("units");
+        let cost = parseFloat($(this).data("cost") || 0);
+
+                    if (this.checked) {
+                    selectedTests.push(id);
+                    $("#finalTable").append(`
+                    <tr id="final-${id}">
+                        <td><input type="text" class="form-control form-control-sm test-name" data-id="${id}" value="${name}"></td>
+                        <td><input type="text" class="form-control form-control-sm test-range" value="${range}"></td>
+                        <td><input type="text" class="form-control form-control-sm test-units" value="${units}"></td>
+                        <td><input type="number" class="form-control form-control-sm test-cost" data-id="${id}" value="${cost}"></td>
+                        <td><button type="button" class="btn btn-sm btn-danger del-row" data-id="${id}" data-cost="${cost}">X</button></td>
+                    </tr>
+                    `);
+                    basicAmount += cost;
+                }
+
+                else {
+                    $(`#final-${id}`).remove();
+                    selectedTests = selectedTests.filter(x => x !== id);
+                    basicAmount -= cost;
+                }
+        updateTotals();
+    });
+
+    // Delete row
+    $(document).on("click", ".del-row", function() {
+        let id = $(this).data("id");
+        let cost = parseFloat($(this).data("cost"));
+        $(`#final-${id}`).remove();
+        $(`#test-row-${id} .test-check`).prop("checked", false);
+        selectedTests = selectedTests.filter(x => x !== id);
+        basicAmount -= cost;
+        updateTotals();
+    });
+
+    
+        function updateTotals() {
+            let basicAmount = 0;
+
+            // ✅ Always add up all cost fields currently visible
+            $(".test-cost").each(function() {
+                basicAmount += parseFloat($(this).val()) || 0;
+            });
+
+            $("#basic_amount").val(basicAmount.toFixed(2));
+
+            let extra = parseFloat($("#extra_cost").val()) || 0;
+            let disc = parseFloat($("#discount").val()) || 0;
+            let total = basicAmount + extra - disc;
+            $("#total_amount").val(total.toFixed(2));
+
+            let paid = parseFloat($("#paid_amount").val()) || 0;
+            let bal = total - paid;
+            $("#balance_amount").val(bal.toFixed(2));
+
+            $("#selected_tests_input").val(selectedTests.join(","));
+        }
+
+    $("#extra_cost, #discount, #paid_amount").on("input", updateTotals);
+
+$(document).on("input", ".test-name, .test-range, .test-units, .test-cost", function() {
+    let row = $(this).closest("tr");
+    let testId = row.find(".test-name").data("id");
+    let testName = row.find(".test-name").val();
+    let normalRange = row.find(".test-range").val();
+    let units = row.find(".test-units").val();
+    let cost = parseFloat(row.find(".test-cost").val()) || 0;
+
+    // Split range (e.g., 5-10 → lower=5, upper=10)
+    let lower = "";
+    let upper = "";
+    if (normalRange.includes("-")) {
+        let parts = normalRange.split("-");
+        lower = parts[0].trim();
+        upper = parts[1]?.trim() || "";
+    } else {
+        lower = normalRange.trim();
+    }
+
+    // ✅ AJAX update to backend
+    $.ajax({
+        url: `/tests/update_test_ajax/${testId}/`,
+        method: "POST",
+        headers: { "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val() },
+        data: { 
+            test_name: testName,
+            lower_range: lower,
+            upper_range: upper,
+            units: units,
+            cost: cost
+        },
+        success: function(response) {
+            if (response.success) {
+                updateTotals();
+            }
+        }
+    });
+
+    updateTotals();
+});
+
+
+// ✅ When test cost edited manually
+$(document).on("input", ".test-cost", function () {
+    let id = $(this).data("id");
+    let newCost = parseFloat($(this).val()) || 0;
+
+    // update local total
+    recalcBasicAmount();
+    updateTotals();
+
+
+});
+
+// ✅ Helper: recalc basic amount from visible rows
+function recalcBasicAmount() {
+    let total = 0;
+    $(".test-cost").each(function () {
+        total += parseFloat($(this).val()) || 0;
+    });
+    basicAmount = total;
+}
+
+// Update compulsory status via checkbox
+$(document).on('change', '.compulsory_chk', function() {
+    let testId = $(this).data('id');
+    let isChecked = $(this).is(':checked');
+
+    $.ajax({
+        url: "{% url 'update_test_compulsory' %}",  // use name from urls.py
+        type: 'POST',
+        headers: { "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val() },
+        data: {
+            'test_id': testId,
+            'compulsory': isChecked
+        },
+        success: function(response){
+            if(response.status === 'ok'){
+                console.log('✅ Compulsory status updated!');
+            } else {
+                console.error('❌ Update failed!', response.message);
+            }
+        },
+        error: function(xhr, status, error){
+            console.error('AJAX error:', error);
+        }
+    });
+});
+
+
+</script>
+
+{% endblock %}

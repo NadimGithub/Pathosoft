@@ -1,0 +1,81 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Add New Lab{% endblock %} {% block content %}
+
+<!-- ======================== MAIN CONTAINER ======================== -->
+<link rel="stylesheet" href="{% static 'css/form-style.css' %}">
+<div class="container-fluid my-5 d-flex justify-content-center">
+
+    <!-- ===== Lab Form Card ===== -->
+    <div class="card lab-card shadow-lg border-0 rounded-4 w-90">
+
+        <!-- ===== Card Header ===== -->
+        <div class="card-header d-flex align-items-center justify-content-between rounded-top-4">
+            <h4 class="mb-0 text-white">
+                <i class="fa-solid fa-flask-vial me-2"></i> Add New Lab
+            </h4>
+            <a href="{% url 'lab_list' %}" class="btn btn-primary btn-sm fw-semibold rounded-pill px-3 hover-glow">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+        <!-- ===== Card Body: Form Section ===== -->
+        <div class="card-body p-4">
+            <form method="post" class="row g-4" action="{% url 'lab_create' %}">
+                {% csrf_token %}
+
+                <!-- Lab Name -->
+                <div class="col-md-6">
+                    <label for="labName" class="form-label fw-semibold">Lab Name</label>
+                    <input type="text" id="labName" name="lab_name" class="form-control shadow-sm" placeholder="Enter Lab Name" required>
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6">
+                    <label for="email" class="form-label fw-semibold">Email</label>
+                    <input type="email" id="email" name="email" class="form-control shadow-sm" placeholder="Enter Email" required>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-md-6">
+                    <label for="contact" class="form-label fw-semibold">Contact</label>
+                    <input type="text" id="contact" name="contact_no" class="form-control shadow-sm" placeholder="Enter Contact Number" required>
+                </div>
+                <!-- Address -->
+                <div class="col-md-6">
+                    <label for="address" class="form-label fw-semibold">Address</label>
+                    <textarea id="address" name="address" class="form-control shadow-sm" rows="3" placeholder="Enter Address" required></textarea>
+                </div>
+
+                <!-- Animated Dropdown (City Selection) -->
+                <!-- <div class="col-md-6">
+                    <label for="city" class="form-label fw-semibold">Status</label>
+                    <div class="custom-select-wrapper">
+                        <select id="city" name="city" class="form-select custom-dropdown" required>
+                        <option value="">-- Select Status --</option>
+                        <option value="mumbai">Active</option>
+                        <option value="delhi">Closed</option>
+                    </select>
+                    </div>
+                </div> -->
+
+                <!-- Created Date -->
+                <!-- <div class="col-md-6">
+                    <label for="createdDate" class="form-label fw-semibold">Created Date</label>
+                    <input type="date" id="createdDate" name="createdDate" class="form-control shadow-sm" required>
+                </div> -->
+
+                <!-- Submit Button -->
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-semibold submit-btn">
+                    <i class="bi bi-save me-2"></i> Save
+                   
+                </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

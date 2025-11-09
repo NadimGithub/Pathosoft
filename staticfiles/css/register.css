@@ -1,0 +1,49 @@
+        .popup-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            animation: fadeInOut 10s forwards;
+        }
+        
+        .alert {
+            padding: 12px 20px;
+            border-radius: 6px;
+            color: white;
+            margin-bottom: 10px;
+            min-width: 250px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .alert-success {
+            background: #28a745;
+        }
+        
+        .alert-danger {
+            background: #dc3545;
+        }
+        
+        .alert-warning {
+            background: #ffc107;
+            color: #000;
+        }
+        
+        .alert-info {
+            background: #17a2b8;
+        }
+        
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            10%,
+            90% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }

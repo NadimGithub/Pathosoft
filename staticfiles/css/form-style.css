@@ -1,0 +1,197 @@
+        /* =================== COMMON FORM STYLE =================== */
+        /* ===== Global Page ===== */
+        
+        body {
+            background: linear-gradient(135deg, #f7f7fc, #eef1ff);
+            font-family: "Poppins", sans-serif;
+            overflow-x: hidden;
+        }
+        /* ===== Card Layout ===== */
+        
+        .card {
+            width: 100%;
+            max-width: 1600px;
+            background: #fff;
+            border-radius: 1.2rem;
+            box-shadow: 0 8px 25px rgba(67, 35, 135, 0.15);
+        }
+        /* ===== Card Header ===== */
+        
+        .card-header {
+            background: linear-gradient(135deg, #09123b, #4240ad, #4284b9);
+            border-top-left-radius: 1.2rem !important;
+            border-top-right-radius: 1.2rem !important;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 15px rgba(91, 46, 255, 0.3);
+        }
+        
+        .card-header h4 {
+            color: white;
+            font-weight: 600;
+        }
+        
+        .card-header .btn {
+            font-weight: 500;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .card-header .btn:hover {
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+        }
+        /* ===== Form Inputs ===== */
+        
+        .form-control,
+        .form-select {
+            border-radius: 0.6rem;
+            border: 1px solid #ccc;
+            background-color: #fafaff;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #6b3eff;
+            box-shadow: 0 0 12px rgba(107, 62, 255, 0.3);
+            background-color: #ffffff;
+        }
+        /* ===== Custom Dropdown ===== */
+        
+        .custom-select-wrapper {
+            position: relative;
+        }
+        
+        .custom-dropdown {
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding-right: 40px;
+        }
+        
+        .custom-dropdown:focus {
+            animation: dropdownOpen 0.35s ease-out;
+        }
+        
+        @keyframes dropdownOpen {
+            from {
+                transform: scaleY(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+        }
+   /* ===== Buttons ===== */
+        
+        .btn-primary {
+            border: none;
+            transition: all 0.3s ease-in-out;
+            border-radius: 50px;
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+        }
+        
+        .design {
+            background: rgb(252, 249, 249);
+            color: black;
+            box-shadow: 0 5px 15px rgba(91, 46, 255, 0.3);
+        }
+        
+        .design:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px linear-gradient(135deg, #09123b, #4240ad, #4284b9);
+        }
+        
+        .first {
+            background: #16297c;
+            color: #fff;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .first:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(186, 207, 224, 0.4) !important;
+            border: 1px solid #4284b9 !important;
+        }
+        /* ===== Consistent Button Styling ===== */
+        /* Base Style for all */
+        
+        .btn-success,
+        .btn-warning,
+        .btn-danger {
+            color: #fff;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        /* ===== SUCCESS BUTTON ===== */
+        
+        .btn-success {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4) !important;
+            border: 1px solid #66bb6a !important;
+        }
+        /* ===== WARNING BUTTON ===== */
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #ffb300, #ffca28);
+            box-shadow: 0 5px 15px rgba(255, 179, 0, 0.3);
+        }
+        
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 179, 0, 0.4) !important;
+            border: 1px solid #ffca28 !important;
+        }
+        /* ===== DANGER BUTTON ===== */
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e53935, #ef5350);
+            box-shadow: 0 5px 15px rgba(229, 57, 53, 0.3);
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 57, 53, 0.4) !important;
+            border: 1px solid #ef5350 !important;
+        }
+            /* ===== Table Styling ===== */
+        
+        .table {
+            border-radius: 0.6rem;
+            overflow: hidden;
+        }
+        
+        .table thead {
+            background: linear-gradient(90deg, #5b2eff, #8230ff);
+            color: #fff;
+        }
+        
+        .table th,
+        .table td {
+            vertical-align: middle !important;
+            font-size: 0.95rem;
+        }
+        /* ===== Shadow Section Cards ===== */
+        
+        .bg-light {
+            background: #f8f9ff !important;
+            border-radius: 1rem;
+        }
+        /* ===== Responsive Adjustments ===== */
+        
+        @media (max-width: 767px) {
+            .card {
+                width: 95%;
+            }
+            .form-select,
+            .form-control {
+                font-size: 0.9rem;
+            }
+        }

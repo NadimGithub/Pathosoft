@@ -1,0 +1,237 @@
+:root {
+    --sidebar-width: 220px;
+    --sidebar-compact: 60px;
+    --primary: #3f51b5;
+    --sidebar-grad-1: #111217;
+    --sidebar-grad-2: #1f2340;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, "Helvetica Neue", Arial;
+    background: #d5d8f1 !important;
+    color: #222;
+}
+
+
+/* Sidebar */
+
+.sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background: linear-gradient(135deg, #09123b, #4240ad, #4284b9);
+    color: #fff;
+    z-index: 1050;
+    transition: transform 280ms ease, width 280ms ease;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.sidebar .sidebar-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    align-items: center;
+}
+
+.logo-img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.logo-text {
+    line-height: 1;
+}
+
+.logo-text .small {
+    opacity: 0.9;
+    font-size: .85rem;
+}
+
+
+/* Nav links */
+
+.nav-link {
+    padding: 12px 14px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 8px;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
+}
+
+.nav-label {
+    white-space: nowrap;
+    font-size: .95rem;
+}
+
+
+/* Collapse submenu */
+
+.toggle-icon {
+    font-size: .72rem;
+    color: rgba(255, 255, 255, 0.65);
+    transition: transform .25s ease;
+}
+
+.collapse.show+.nav-link,
+.nav-item .collapse.show~.nav-link {}
+
+.collapse.show~.nav-link .toggle-icon {
+    transform: rotate(180deg);
+}
+
+
+/* small subsection links */
+
+.nav .small {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.nav .text-secondary {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.nav .list-unstyled a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+
+/* overlay (mobile) */
+
+.overlay {
+    display: none;
+}
+
+.overlay.show {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1040;
+}
+
+
+/* Main content area */
+
+.main-content {
+    margin-left: var(--sidebar-width);
+    transition: margin-left 280ms ease;
+    min-height: 100vh;
+}
+
+
+/* Topbar */
+
+header {
+    background: transparent;
+}
+
+
+/* Cards & charts */
+
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.card .card-title {
+    color: #333;
+    font-weight: 600;
+}
+
+.shadow-sm {
+    box-shadow: 0 6px 18px rgba(22, 28, 45, 0.06);
+}
+
+
+/* Chart wrapper ensures responsive height */
+
+.chart-wrapper {
+    width: 100%;
+}
+
+
+/* Responsive behavior */
+
+
+/* Small screens (mobile): sidebar hidden by default and slides in */
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        transform: translateX(-110%);
+        width: calc(100% - 56px);
+        max-width: 320px;
+    }
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    .main-content {
+        margin-left: 0;
+    }
+    .overlay {
+        display: none;
+    }
+    .overlay.show {
+        display: block;
+    }
+}
+
+
+/* Large screens: keep sidebar visible; allow 'compact' look when toggled */
+
+@media (min-width: 992px) {
+    .sidebar.compact {
+        width: var(--sidebar-compact);
+    }
+    .sidebar.compact .nav-label,
+    .sidebar.compact .logo-text {
+        display: none;
+    }
+    .sidebar.compact .nav-link {
+        justify-content: center;
+        padding: 12px;
+    }
+    .main-content.compact {
+        margin-left: var(--sidebar-compact);
+    }
+}
+
+
+/* Utility tweaks: ensure top spacing on small devices */
+
+@media (max-width: 575.98px) {
+    main.container-fluid {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    .nav .small {
+        font-size: .82rem;
+    }
+}
+
+
+/* small polish */
+
+.nav .nav-link.text-secondary:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: #fff !important;
+}

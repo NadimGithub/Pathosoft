@@ -1,0 +1,112 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Ledger - {{ doctor.doctor_name }}{% endblock %} {% block content %}
+<link rel="stylesheet" href="{% static 'css/lab_list.css' %}">
+<link rel="stylesheet" href="{% static 'css/test.css' %}">
+
+
+<div class="container-fluid my-5 d-flex justify-content-center">
+    <div class="card shadow-lg border-0 rounded-4 w-90">
+
+        <!-- ✅ HEADER -->
+        <div class="card-header flex-wrap">
+            <h4><i class="fa-solid fa-file-invoice-dollar me-2"></i>Ledger - {{ doctor.doctor_name }}</h4>
+
+            <!-- ✅ Date Filter Form (inside header like Doctor List Search) -->
+            <!-- 🔹 Filter Section -->
+            <form method="get" class="row g-3 align-items-center mb-3">
+                <div class="col-auto">
+                    <label for="payment_date" class="col-form-label fw-semibold">Select Date:</label>
+                </div>
+                <div class="col-auto">
+                    <input type="date" id="payment_date" name="payment_date" class="form-control form-control-sm" value="{{ payment_date|default:'' }}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary btn-sm">
+      <i class="bi bi-search"></i> Search
+    </button>
+                    <a href="{% url 'doctor_ledger_detail' doctor.id %}" class="btn btn-secondary btn-sm ms-1">
+                        <i class="bi bi-x-circle"></i> Clear
+                    </a>
+                </div>
+            </form>
+
+
+            <a href="{% url 'add_transaction' doctor.id %}" class="btn btn-primary btn-sm">+ Add Payment</a>
+        </div>
+
+        <!-- ✅ LEDGER SUMMARY -->
+        <div class="p-4">
+            <div class="row text-center mb-3">
+                <div class="col-md-4">
+                    <div class="p-3 shadow-sm rounded bg-light">
+                        <h6 class="fw-bold text-primary">Total Commission</h6>
+                        <p class="fs-5 fw-semibold text-dark">₹{{ ledger.total_commission }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 shadow-sm rounded bg-light">
+                        <h6 class="fw-bold text-success">Paid Amount</h6>
+                        <p class="fs-5 fw-semibold text-dark">₹{{ ledger.paid_amount }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 shadow-sm rounded bg-light">
+                        <h6 class="fw-bold text-danger">Balance</h6>
+                        <p class="fs-5 fw-semibold text-dark">₹{{ ledger.balance_amount }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✅ TRANSACTION HISTORY TABLE -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount Paid</th>
+                            <th>Payment Mode</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in transactions %}
+                        <tr>
+                            <td>{{ t.payment_date }}</td>
+                            <td>₹{{ t.amount_paid }}</td>
+                            <td>{{ t.payment_mode }}</td>
+                            <td>{{ t.remarks }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">No transactions found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ✅ PAGINATION -->
+            {% if transactions.has_other_pages %}
+            <div class="d-flex justify-content-center my-3">
+                <ul class="pagination">
+                    {% if transactions.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ transactions.previous_page_number }}{% if payment_date %}&payment_date={{ payment_date }}{% endif %}">&laquo;</a>
+                    </li>
+                    {% endif %} {% for num in transactions.paginator.page_range %} {% if transactions.number == num %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}{% if payment_date %}&payment_date={{ payment_date }}{% endif %}">{{ num }}</a>
+                    </li>
+                    {% endif %} {% endfor %} {% if transactions.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ transactions.next_page_number }}{% if payment_date %}&payment_date={{ payment_date }}{% endif %}">&raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

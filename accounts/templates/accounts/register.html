@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24 HRS Sign Up</title>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+</head>
+
+<body>
+    <div class="background"></div>
+
+    <div class="login-container">
+        {% if messages %}
+        <div id="message-popup" class="popup-message">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="login-card">
+            <div class="login-image">
+                <img src="{% static 'images/lab.png' %}" alt="Lab Illustration">
+            </div>
+            <div class="login-form">
+                <h2>Create Account</h2>
+                <p>Sign up to access 24 HRS Lab</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" placeholder="Full Name" name="full_name" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" placeholder="Username" name="username" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" placeholder="Email" name="email" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="number" placeholder="Phone Number" name="mobile_no" required>
+                    </div>
+                    <div class="input-group password-group">
+
+                        <input type="password" placeholder="Password" name="password1" id="password1" required>
+                        <i class="fa-solid fa-eye" id="togglePassword"></i>
+                    </div>
+                    <div class="input-group password-group">
+
+                        <input type="password" placeholder="Confirm Password" name="password2" id="confirmPassword" required>
+
+                    </div>
+                    <button type="submit">Register</button>
+                    <p class="switch-page">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+
+</html>
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
+<h2>Register</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Register</button>
+</form>
+<br>
+<a href="{% url 'login' %}">Already have an account? Login</a>
+</body>
+</html> -->

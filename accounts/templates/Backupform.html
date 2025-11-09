@@ -1,0 +1,74 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Take Backup{% endblock %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/form-style.css' %}">
+<link rel="stylesheet" href="{% static 'css/back.css' %}">
+<div class="container-fluid my-5 d-flex justify-content-center">
+    <div class="card lab-card shadow-lg border-0 rounded-4 w-90">
+        <!-- Card Header -->
+        <div class="card-header d-flex align-items-center justify-content-between rounded-top-4">
+            <h4 class="mb-0 text-white">
+                <i class="fas fa-database me-2"></i> Database Backup
+            </h4>
+            <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm fw-semibold rounded-pill px-3 ">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body p-4">
+            <!-- Instructions Section -->
+            <div class="alert alert-info mb-4">
+                <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Backup Instructions</h5>
+                <hr>
+                <ol class="mb-0">
+                    <li>The backup will save all your data including patients, tests, and reports</li>
+                    <li>Backup file will be saved in your downloads folder</li>
+                    <li>Keep multiple copies of backup files in different locations</li>
+                    <li>Regular backups are recommended (at least weekly)</li>
+                </ol>
+            </div>
+
+            <!-- Warning Section -->
+            <div class="alert alert-warning mb-4">
+                <h5 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>Important Notes</h5>
+                <hr>
+                <ul class="mb-0">
+                    <li>Do not modify the backup file</li>
+                    <li>Store backups in a secure location</li>
+                    <li>Previous backup files will not be overwritten</li>
+                </ul>
+            </div>
+
+            <!-- Backup Button Section -->
+            <div class="text-center">
+                <form action="{% url 'take_backup' %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-lg rounded-pill px-5">
+                        <i class="fas fa-download me-2"></i> Take Backup Now
+                    </button>
+                </form>
+            </div>
+
+            {% if messages %}
+            <div class="mt-4">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Card Footer -->
+        <div class="card-footer bg-light p-3 rounded-bottom-4">
+            <div class="text-muted text-center">
+                <small><i class="fas fa-shield-alt me-1"></i> Your data is important - make regular backups</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

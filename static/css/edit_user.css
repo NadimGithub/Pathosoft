@@ -1,0 +1,38 @@
+    /* wrapper for input+icon (same height as input) */
+    
+    .input-affix {
+        position: relative;
+        display: block;
+    }
+    /* make room inside input for the icon */
+    
+    .input-affix .form-control {
+        padding-right: 3.25rem;
+        /* adjust if icon is large */
+        box-sizing: border-box;
+    }
+    /* center the icon vertically relative to the input */
+    
+    .input-affix .toggle-password {
+        position: absolute;
+        right: 12px;
+        /* distance from right edge */
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 1.05rem;
+        color: #6c757d;
+        line-height: 1;
+        /* avoids vertical jitter */
+        -webkit-tap-highlight-color: transparent;
+    }
+    /* hover / active looks */
+    
+    .input-affix .toggle-password:hover {
+        color: #6f42c1;
+    }
+    
+    .input-affix .toggle-password.visible {
+        color: #6f42c1;
+        /* change color when visible if you want */
+    }

@@ -1,0 +1,53 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Update Test Group{% endblock %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/form-style.css' %}">
+
+<div class="container-fluid my-5 d-flex justify-content-center">
+    <div class="card lab-card shadow-lg border-0 rounded-4 w-90">
+
+
+        <!-- ===== Card Header ===== -->
+        <div class="card-header d-flex align-items-center justify-content-between rounded-top-4">
+            <h4 class="mb-0 text-white">
+                <i class="fa-solid fa-layer-group me-2"></i> Update Test Group
+            </h4>
+            <a href="{% url 'view_test_groups' %}" class="btn btn btn-primary design btn-sm fw-semibold rounded-pill px-3 hover-glow">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+        <!-- ===== Card Body: Form Section ===== -->
+        <div class="card-body p-4">
+            <form method="post" class="row g-4">
+                {% csrf_token %}
+
+                <!-- Group Name -->
+                <div class="col-md-6">
+                    <label for="id_group_name" class="form-label fw-semibold">Group Name</label>
+                    <input type="text" id="group_name" name="group_name" class="form-control shadow-sm" placeholder="Enter Group Name" value="{{ form.group_name.value }}" required>
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-6">
+                    <label for="id_department" class="form-label fw-semibold">Select Department</label>
+                    <select id="department" name="department" class="form-select shadow-sm" required>
+                        <option value="" disabled>Select Department</option>
+                        {% for dept in departments %}
+                        <option value="{{ dept.dept_id }}" {% if form.department.value|stringformat:"s" == dept.dept_id|stringformat:"s" %}selected{% endif %}>{{ dept.department_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn first px-5 py-2 rounded-pill fw-semibold submit-btn">
+        <i class="bi bi-save me-2"></i> Update Group
+      </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Add Payment - {{ doctor.doctor_name }}{% endblock %} {% block content %}
+
+<!-- ✅ Include shared CSS -->
+<link rel="stylesheet" href="{% static 'css/form-style.css' %}">
+
+<div class="container-fluid my-5 d-flex justify-content-center">
+    <!-- ===== Payment Form Card ===== -->
+    <div class="card lab-card shadow-lg border-0 rounded-4 w-90">
+
+        <!-- ===== Header ===== -->
+        <div class="card-header d-flex align-items-center justify-content-between rounded-top-4">
+            <h4 class="mb-0 text-white">
+                <i class="fa-solid fa-wallet me-2"></i> Add Payment - {{ doctor.doctor_name }}
+            </h4>
+            <a href="{% url 'doctor_ledger_detail' doctor.id %}" class="btn btn-light btn-sm fw-semibold rounded-pill px-3 hover-glow">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+        <!-- ===== Body: Payment Form ===== -->
+        <div class="card-body p-4">
+            <form method="POST" class="row g-4">
+                {% csrf_token %}
+
+                <!-- Amount Paid -->
+                <div class="col-md-6">
+                    <label for="amountPaid" class="form-label fw-semibold">Amount Paid</label>
+                    <input type="number" id="amountPaid" name="amount_paid" class="form-control shadow-sm" placeholder="Enter Amount Paid" required>
+                </div>
+
+                <!-- Payment Mode -->
+                <div class="col-md-6">
+                    <label for="paymentMode" class="form-label fw-semibold">Payment Mode</label>
+                    <div class="custom-select-wrapper">
+                        <select id="paymentMode" name="payment_mode" class="form-select custom-dropdown shadow-sm" required>
+              <option value="">-- Select Payment Mode --</option>
+              <option value="cash">Cash</option>
+              <option value="bank">bank</option>
+              <!-- <option value="Online">Online</option> -->
+              <option value="upi">UPI</option>
+            </select>
+                    </div>
+                </div>
+
+                <!-- Remarks -->
+                <div class="col-12">
+                    <label for="remarks" class="form-label fw-semibold">Remarks</label>
+                    <textarea id="remarks" name="remarks" rows="3" class="form-control shadow-sm" placeholder="Enter Remarks"></textarea>
+                </div>
+
+                <!-- Submit + Cancel -->
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-semibold submit-btn">
+            <i class="bi bi-save me-2"></i> Save
+          </button>
+                    <a href="{% url 'doctor_ledger_detail' doctor.id %}" class="btn btn-light rounded-pill px-4 py-2 fw-semibold ms-2 hover-glow">
+                        <i class="fa-solid fa-xmark me-1"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

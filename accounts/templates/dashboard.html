@@ -1,0 +1,832 @@
+{% extends 'base.html' %} {% block title %}Dashboard{% endblock %} {% block content %}
+<style>
+    /* 🌟 Base Layout */
+    
+    body {
+        background: #f4f6f9;
+        font-family: "Poppins", sans-serif;
+    }
+    /* 🌟 Fade-in animation */
+    
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    /* 🌟 Card Common Styling */
+    
+    .card {
+        border: none;
+        border-radius: 15px;
+        animation: fadeInUp 0.6s ease forwards;
+        transition: all 0.35s ease;
+    }
+    
+    .card h6 {
+        letter-spacing: 0.5px;
+    }
+    /* 🌟 Dashboard Header */
+    
+    h5 {
+        font-weight: 600;
+        color: #333;
+    }
+    /* 🌟 Hover effect base */
+    
+    .hover-effect {
+        transition: all 0.35s ease;
+        border: 1px solid transparent;
+        border-radius: 15px;
+        transform: translateY(0);
+    }
+    
+    .hover-effect:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 0.8rem 1.4rem rgba(0, 0, 0, 0.15);
+        color: #fff !important;
+    }
+    /* 🌈 Unique Hover Colors for Each Card Type */
+    
+    .new-patient-link .hover-effect:hover,
+    .summary-card.total-tests:hover,
+    .detailed-today:hover {
+        background: linear-gradient(135deg, #3f51b5, #a48aeebb);
+        /* Indigo → Light Purple */
+    }
+    
+    .add-test-link .hover-effect:hover,
+    .summary-card.total-patients:hover,
+    .detailed-month:hover {
+        background: linear-gradient(135deg, #28a745, #fbff00);
+        /* Green → Yellow */
+    }
+    
+    .view-patients-link .hover-effect:hover,
+    .summary-card.pending-reports:hover,
+    .detailed-year:hover {
+        background: linear-gradient(135deg, #fd7e14, #fcaf5d);
+        /* Orange → Peach */
+    }
+    
+    .view-doctors-link .hover-effect:hover,
+    .summary-card.doctors:hover {
+        background: linear-gradient(135deg, #17a2b8, #66bb6a);
+        /* Teal → Green */
+    }
+    
+    .view-payments-link .hover-effect:hover,
+    .summary-card.payments:hover,
+    .chart-reports:hover {
+        background: linear-gradient(135deg, #d40909, #f38c7a);
+        /* Purple → Blue */
+    }
+    
+    .view-export-link .hover-effect:hover,
+    .summary-card.exports:hover,
+    .chart-reports:hover {
+        background: linear-gradient(135deg, #056405, #31f56c);
+        /* Purple → Blue */
+    }
+    /* 🌟 Icons */
+    
+    .hover-effect i {
+        transition: all 0.35s ease;
+    }
+    
+    .hover-effect:hover i {
+        transform: scale(1.15);
+        color: white !important;
+    }
+    /* 🌟 Summary Cards */
+    
+    .summary-card {
+        border-radius: 15px;
+        transition: all 0.35s ease;
+        text-align: center;
+    }
+    
+    .summary-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.6rem 1rem rgba(0, 0, 0, 0.1);
+        color: white !important;
+         background: linear-gradient(135deg, #3f51b5, #a48aeebb);
+    }
+
+    
+    /* 🌟 Chart Cards */
+    
+    .chart-reports {
+        transition: all 0.35s ease;
+    }
+    
+    .chart-reports:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.6rem 1rem rgba(0, 0, 0, 0.1);
+        color: white !important;
+    }
+    /* Keep text visible on hover for specific cards */
+    
+    .hover-effect:not(.total-reports):hover h6,
+    .hover-effect:not(.total-reports):hover h2,
+    .hover-effect:not(.total-reports):hover h3,
+    .hover-effect:not(.total-reports):hover i {
+        color: #fff !important;
+    }
+    /* Remove hover effect specifically for Total Reports card */
+    
+    .total-reports {
+        transition: none !important;
+    }
+    
+    .total-reports:hover {
+        transform: none !important;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    }
+    
+    .total-reports .card-body h6,
+    .total-reports .card-body h3,
+    .total-reports .card-body i {
+        transition: none !important;
+        color: inherit !important;
+    }
+    /* 🌟 Section Headers */
+    
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #444;
+    }
+    /* 🌟 Responsive */
+    
+    @media (max-width: 768px) {
+        .hover-effect i {
+            font-size: 1.8rem !important;
+        }
+        .hover-effect h6 {
+            font-size: 0.9rem;
+        }
+    }
+
+    /* 🧩 Fix for blurry background when Bootstrap modal is opened */
+.modal-backdrop.show {
+    backdrop-filter: none !important; /* Remove blur */
+    background-color: rgba(0, 0, 0, 0.5) !important; /* Keep normal dark overlay */
+}
+
+body.modal-open {
+    filter: none !important; /* Prevent blur of entire page content */
+}
+
+.modal-backdrop {
+  display: none !important;
+}
+</style>
+
+<div class="container-fluid mt-4">
+
+    <!-- ✅ Quick Actions -->
+    <div class="row g-3 mb-4">
+        <div class="col-12">
+            <h5 class="mb-3 section-title">Quick Actions</h5>
+        </div>
+
+        <div class="col-md-2 col-6 new-patient-link">
+            <a href="{% url 'add_patient' %}" class="text-decoration-none">
+                <div class="card shadow-sm text-center p-3 hover-effect">
+                    <i class="fas fa-user-plus fa-2x text-primary mb-2"></i>
+                    <h6 class="mb-0">New Patient</h6>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-2 col-6 add-test-link">
+            <a href="{% url 'add_test' %}" class="text-decoration-none">
+                <div class="card shadow-sm text-center p-3 hover-effect">
+                    <i class="fas fa-flask fa-2x text-success mb-2"></i>
+                    <h6 class="mb-0">New Test</h6>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-2 col-6 view-patients-link">
+            <a href="{% url 'view_patients' %}" class="text-decoration-none">
+                <div class="card shadow-sm text-center p-3 hover-effect">
+                    <i class="fas fa-file-medical-alt fa-2x text-warning mb-2"></i>
+                    <h6 class="mb-0">Patient Reports</h6>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-2 col-6 view-doctors-link">
+            <a href="{% url 'view_doctors' %}" class="text-decoration-none">
+                <div class="card shadow-sm text-center p-3 hover-effect">
+                    <i class="fas fa-user-md fa-2x text-info mb-2"></i>
+                    <h6 class="mb-0">Doctors</h6>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-2 col-6 view-payments-link">
+            <a href="{% url 'doctor_ledger_list' %}" class="text-decoration-none">
+                <div class="card shadow-sm text-center p-3 hover-effect">
+                    <i class="fas fa-wallet fa-2x text-danger mb-2"></i>
+                    <h6 class="mb-0">Payments</h6>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-2 col-6 view-export-link">
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#exportModal">
+                <div class="card shadow-sm text-center p-3 hover-effect">
+                    <i class="fas fa-file-excel fa-2x text-success mb-2"></i>
+                    <h6 class="mb-0">Export Data</h6>
+                </div>
+            </a>
+        </div>
+
+        <!-- Export Modal -->
+        <!-- Export Data Modal -->
+        <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content shadow-lg border-0 rounded-4">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title fw-semibold" id="exportModalLabel">
+                            <i class="fas fa-file-excel me-2"></i> Export Data to Excel
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body p-4">
+                        <!-- Export All Doctors -->
+                        <div class="d-grid gap-3 mb-3">
+                            <a href="{% url 'export_doctors_excel' %}" class="btn btn-outline-success btn-lg w-100">
+                                <i class="fas fa-user-md me-2"></i> Export All Doctors
+                            </a>
+                        </div>
+                        <div class="d-grid gap-3 mb-3">
+                            <a href="{% url 'export_all_patients' %}" class="btn btn-outline-primary btn-lg w-100">
+                                <i class="fas fa-users me-2"></i> Export All Patients
+                            </a>
+                        </div>
+
+                        <hr>
+
+                        <!-- 🔍 Search Form with User Type Selection -->
+                        <form id="searchForm" class="mb-3">
+                            {% csrf_token %}
+                            <div class="form-check form-check-inline mb-2">
+                                <input class="form-check-input" type="radio" name="searchType" id="searchPatient" value="patient" checked>
+                                <label class="form-check-label" for="searchPatient">Patient</label>
+                            </div>
+                            <div class="form-check form-check-inline mb-3">
+                                <input class="form-check-input" type="radio" name="searchType" id="searchDoctor" value="doctor">
+                                <label class="form-check-label" for="searchDoctor">Doctor</label>
+                            </div>
+
+                            <div class="input-group">
+                                <input type="text" name="q" id="searchInput" placeholder="Search by name, ID or mobile..." autocomplete="off" class="form-control rounded-pill shadow-sm px-3" />
+                                <button type="submit" class="btn btn-primary btn-sm ms-2 rounded-pill px-3">
+                                <i class="fa fa-search text-white"></i> Search
+                            </button>
+                            </div>
+                        </form>
+
+                        <!-- 🧾 Search Results -->
+                        <div id="searchResults" class="search-results mt-3" style="max-height: 300px; overflow-y: auto; display: none;">
+                            <!-- Results will be populated here by JavaScript -->
+                        </div>
+
+                        <!-- IMPORTANT: load jQuery BEFORE any inline scripts that use $ -->
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+                        <script>
+                            $(document).ready(function() {
+                                // Handle search form submission
+                                $('#searchForm').on('submit', function(e) {
+                                    e.preventDefault(); // Prevent form submission
+
+                                    const searchQuery = $('#searchInput').val().trim();
+                                    const searchType = $('input[name="searchType"]:checked').val();
+
+                                    if (!searchQuery) return;
+
+                                    // Show loading state
+                                    const $results = $('#searchResults');
+                                    $results.html('<div class="text-center p-3"><i class="fas fa-spinner fa-spin me-2"></i>Searching...</div>');
+                                    $results.show();
+
+                                    // Determine the URL based on search type
+                                    const url = searchType === 'patient' ?
+                                        '{% url "patient_search" %}' :
+                                        '{% url "doctor_search" %}';
+
+                                    // Make AJAX request
+                                    $.ajax({
+                                        url: url,
+                                        type: 'GET',
+                                        data: {
+                                            q: searchQuery
+                                        },
+                                        success: function(response) {
+                                            const items = searchType === 'patient' ? response.patients : response.doctors;
+                                            const itemType = searchType === 'patient' ? 'patient' : 'doctor';
+
+                                            if (items && items.length > 0) {
+                                                let html = '<ul class="list-group">';
+                                                items.forEach(function(item) {
+                                                    if (searchType === 'patient') {
+                                                        const exportUrl = "{% url 'export_patient_excel' 0 %}".replace('0', item.patient_id);
+                                                        html += `
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>${item.patient_name}</strong><br>
+                                        <small class="text-muted">
+                                            ID: ${item.patient_id} | ${item.mobile_number}
+                                        </small>
+                                    </div>
+                                    <a href="${exportUrl}"
+                                       class="btn btn-outline-success btn-sm export-btn">
+                                        <i class="fas fa-file-export me-1"></i> Export
+                                    </a>
+                                </li>`;
+                                                    } else {
+                                                        const exportUrl = "{% url 'export_doctors_excel' %}";
+                                                        html += `
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>${item.doctor_name}</strong><br>
+                                        <small class="text-muted">
+                                            ID: ${item.doctor_id} | ${item.mobile_number} | ${item.specialization || 'N/A'}
+                                        </small>
+                                    </div>
+                                    <a href="${exportUrl}"
+                                       class="btn btn-outline-success btn-sm export-btn">
+                                        <i class="fas fa-file-export me-1"></i> Export
+                                    </a>
+                                </li>`;
+                                                    }
+                                                });
+                                                html += '</ul>';
+                                                $results.html(html);
+                                            } else {
+                                                const typeName = searchType === 'patient' ? 'patients' : 'doctors';
+                                                $results.html(`<div class="list-group-item text-center text-muted">No ${typeName} found.</div>`);
+                                            }
+                                        },
+                                        error: function() {
+                                            $results.html('<div class="list-group-item text-center text-danger">Error occurred while searching. Please try again.</div>');
+                                        }
+                                    });
+                                });
+
+                                // Close search results when clicking outside
+                                $(document).on('click', function(e) {
+                                    if (!$(e.target).closest('#searchForm, #searchResults').length) {
+                                        $('#searchResults').hide();
+                                    }
+                                });
+                            });
+                        </script>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary rounded-pill px-3" data-bs-dismiss="modal">
+                    <i class="fa fa-times me-1"></i> Close
+                </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+       <!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm summary-card h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted mb-1">Total Reports</h6>
+                        <h3 class="mb-0 text-dark">{{ context.total_reports_all }}</h3>
+                        <span class="text-success"><i class="fas fa-chart-line"></i> {{ context.avg_daily_reports }} avg/day</span>
+                    </div>
+                    <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-file-medical fa-2x text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm summary-card h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted mb-1">Pending Reports</h6>
+                        <h3 class="mb-0" id="pendingReports">{{ context.pending_reports }}</h3>
+                    </div>
+                    <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-clock fa-2x text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm summary-card h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted mb-1">Total Patients</h6>
+                        <h3 class="mb-0">{{ context.patient_count }}</h3>
+                    </div>
+                    <div class="bg-success bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-user-injured fa-2x text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm summary-card h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted mb-1">Total Tests</h6>
+                        <h3 class="mb-0">{{ context.test_count }}</h3>
+                    </div>
+                    <div class="bg-info bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-flask fa-2x text-info"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <!-- Date Range Picker -->
+        <div class="row g-3 mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <form id="dateRangeForm" class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary text-white border-primary">
+                                        <i class="bi bi-calendar3 me-1"></i> Start
+                                    </span>
+                                    <input type="date" class="form-control border-primary" id="startDate" name="start_date" value="{{ context.start_date }}">
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary text-white border-primary">
+                                        <i class="bi bi-calendar3 me-1"></i> End
+                                    </span>
+                                    <input type="date" class="form-control border-primary" id="endDate" name="end_date" value="{{ context.end_date }}">
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-funnel me-1"></i> Apply
+                                </button>
+                            </div>
+                            <div class="col">
+                                <div class="btn-group btn-group-sm float-end" role="group">
+                                    <button type="button" class="btn btn-outline-primary date-range-btn" data-days="7">
+                                        <i class="bi bi-7-circle me-1"></i> 7 Days
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary date-range-btn" data-days="15">
+                                        <i class="bi bi-15-square me-1"></i> 15 Days
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary date-range-btn" data-days="30">
+                                        <i class="bi bi-calendar-month me-1"></i> 30 Days
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <style>
+                            /* Custom styles for the date range form */
+                            
+                            #dateRangeForm .input-group-text {
+                                font-weight: 500;
+                                min-width: 80px;
+                            }
+                            
+                            #dateRangeForm .form-control:focus,
+                            #dateRangeForm .btn:focus {
+                                box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+                            }
+                            
+                            #dateRangeForm .btn-outline-primary:hover {
+                                background-color: #0d6efd;
+                                color: white;
+                            }
+                            
+                            #dateRangeForm .btn-outline-primary {
+                                transition: all 0.2s ease-in-out;
+                            }
+                        </style>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📊 Reports Chart -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0"><i class="fas fa-chart-line me-2"></i>Reports Overview</h5>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="chartTypeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-chart-line me-1"></i> Line Chart
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chartTypeDropdown">
+                                    <li><a class="dropdown-item chart-type-btn active" href="#" data-type="line"><i
+                                                class="fas fa-chart-line me-2"></i>Line Chart</a></li>
+                                    <li><a class="dropdown-item chart-type-btn" href="#" data-type="bar"><i
+                                                class="fas fa-chart-bar me-2"></i>Bar Chart</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="chart-container" style="position: relative; height: 400px; min-height: 400px; border: 1px dashed #eee; background: #f9f9f9;">
+                            <canvas id="reportsChart" style="width: 100%; height: 100%;"></canvas>
+                        </div>
+                        <div id="chartDebug" class="text-muted small mt-2"></div>
+                        <div class="mt-3 text-end">
+                            <small class="text-muted">Hover over the chart for details</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scripts for charts and pickers -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+        <script>
+            // ✅ Initialize date pickers
+            flatpickr("input[type=date]", {
+                dateFormat: "Y-m-d",
+                maxDate: "today"
+            });
+
+            let reportsChart;
+
+            // ✅ Chart Initialization Function
+            function initializeChart(labels, data) {
+                const ctx = document.getElementById("reportsChart").getContext("2d");
+
+                // Destroy previous chart instance
+                if (reportsChart) reportsChart.destroy();
+
+                // Get selected chart type
+                const chartType = $('.chart-type-btn.active').data('type') || 'bar';
+
+                // ✅ Bar colors based on value
+                const barColors = data.map(value => value > 1 ? "#00C853" : "#E53935");
+
+                // ✅ Determine dynamic step size
+                const maxValue = Math.max(...data);
+                let stepSize = 1;
+                if (maxValue > 200) stepSize = 20;
+                else if (maxValue > 100) stepSize = 10;
+                else if (maxValue > 50) stepSize = 5;
+                else if (maxValue > 10) stepSize = 2;
+
+                // ✅ 3D shadow plugin
+                const shadowPlugin = {
+                    id: "barShadow",
+                    beforeDatasetsDraw(chart, args, opts) {
+                        const {
+                            ctx
+                        } = chart;
+                        chart.data.datasets.forEach((dataset, i) => {
+                            const meta = chart.getDatasetMeta(i);
+                            meta.data.forEach((bar, index) => {
+                                const {
+                                    x,
+                                    y,
+                                    width,
+                                    height
+                                } = bar.getProps(['x', 'y', 'width', 'height'], true);
+                                ctx.save();
+                                ctx.fillStyle = "rgba(0,0,0,0.25)";
+                                ctx.filter = "blur(4px)";
+                                ctx.fillRect(x - width / 2 + 4, y + 6, width, height);
+                                ctx.restore();
+                            });
+                        });
+                    }
+                };
+
+                // ✅ Chart.js instance
+                reportsChart = new Chart(ctx, {
+                    type: chartType,
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                        label: "Reports Count",
+                        data: data,
+                        backgroundColor: chartType === "line"
+                            ? "rgba(33, 150, 243, 0.25)"   // 🔵 transparent blue fill (line area)
+                            : "rgba(33, 150, 243, 0.25)",  // 🔵 transparent blue bars
+                        borderColor: "rgba(33, 150, 243, 1)", // 🔵 solid blue stroke for both
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        tension: 0.4,
+                        fill: chartType === "line",          // only fill in line chart
+                    }]
+
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: "#222",
+                                titleColor: "#fff",
+                                bodyColor: "#fff",
+                                borderColor: "#555",
+                                borderWidth: 1,
+                                padding: 10,
+                                displayColors: false,
+                                callbacks: {
+                                    label: ctx => `${ctx.parsed.y} report${ctx.parsed.y !== 1 ? 's' : ''}`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: "#444",
+                                    font: {
+                                        family: "Poppins",
+                                        size: 12
+                                    }
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: stepSize,
+                                    color: "#444",
+                                    font: {
+                                        family: "Poppins",
+                                        size: 12
+                                    },
+                                    callback: v => v.toFixed(0)
+                                },
+                                grid: {
+                                    color: ctx => ctx.tick.value === 2 ? "#FFD600" : "#E0E0E0",
+                                    lineWidth: ctx => ctx.tick.value === 2 ? 2 : 1,
+                                }
+                            }
+                        },
+                        animation: {
+                            duration: 1200,
+                            easing: "easeOutElastic"
+                        },
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                    },
+                    plugins: [shadowPlugin]
+                });
+            }
+
+            // ✅ jQuery: AJAX, Range Picker, and Chart Switch
+            $(document).ready(function() {
+                // Get initial data from Django template
+                const labels = JSON.parse('{{ labels|escapejs|default:"[]" }}');
+                const dailyCounts = JSON.parse('{{ daily_counts|escapejs|default:"[]" }}');
+
+                // Initialize chart with real data if available, otherwise show message
+                if (labels.length > 0 && dailyCounts.length > 0) {
+                    initializeChart(labels, dailyCounts);
+                    $('#chartDebug').html(`Data points: ${labels.length}, First: ${labels[0] || 'N/A'}, Last: ${labels[labels.length - 1] || 'N/A'}`);
+                } 
+                else {
+                    // If no data, show message and initialize with empty data
+                    // $('#chartDebug').html('<div class="alert alert-warning mt-2">No data available for the selected date range</div>');
+                    initializeChart([], []);
+                }
+
+                // ✅ Date range form
+                $('#dateRangeForm').on('submit', function(e) {
+                    e.preventDefault();
+                    const formData = $(this).serialize();
+                    const btn = $(this).find('button[type="submit"]');
+                    const original = btn.html();
+
+                    btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Loading...');
+
+                    $.ajax({
+                        url: window.location.pathname,
+                        type: 'GET',
+                        data: formData,
+                        dataType: 'json',
+                        success: function(r) {
+                            initializeChart(r.labels, r.daily_counts);
+                            $('#totalReports').text(r.total_reports);
+                            $('#pendingReports').text(r.pending_reports);
+                            const newUrl = `${window.location.pathname}?${formData}`;
+                            window.history.pushState({
+                                path: newUrl
+                            }, '', newUrl);
+                        },
+                        error: function() {
+                            alert("Error loading data. Please try again.");
+                        },
+                        complete: function() {
+                            btn.prop('disabled', false).html(original);
+                        }
+                    });
+                });
+
+                // ✅ Quick range buttons
+                $('.date-range-btn').on('click', function() {
+                    const days = parseInt($(this).data('days'));
+                    const end = new Date();
+                    const start = new Date();
+                    start.setDate(end.getDate() - (days - 1));
+                    const format = d => d.toISOString().split('T')[0];
+                    $('#startDate').val(format(start));
+                    $('#endDate').val(format(end));
+                    $('#dateRangeForm').submit();
+                });
+
+                // ✅ Chart Type Switch
+                $('.chart-type-btn').on('click', function(e) {
+                    e.preventDefault();
+                    $('.chart-type-btn').removeClass('active');
+                    $(this).addClass('active');
+                    const chartType = $(this).data('type');
+                    const icon = chartType === 'line' ? 'chart-line' : 'chart-bar';
+                    $('#chartTypeDropdown').html(`<i class="fas fa-${icon} me-1"></i> ${$(this).text().trim()}`);
+                    initializeChart(reportsChart.data.labels, reportsChart.data.datasets[0].data);
+                });
+            });
+
+            // Defensive DOM access: only attach listeners if elements exist
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('patientSearch');
+                const patientSelect = document.getElementById('patientSelect');
+                const exportBtn = document.getElementById('exportBtn');
+
+                if (searchInput) {
+                    searchInput.addEventListener('keyup', function() {
+                        const filter = this.value.toLowerCase();
+                        const options = patientSelect ? patientSelect.options : [];
+                        for (let i = 0; i < options.length; i++) {
+                            const text = options[i].text.toLowerCase();
+                            options[i].style.display = text.includes(filter) ? '' : 'none';
+                        }
+                    });
+                }
+
+                if (patientSelect) {
+                    patientSelect.addEventListener('change', function() {
+                        if (exportBtn) exportBtn.disabled = !this.value;
+                    });
+                }
+
+                if (exportBtn && patientSelect) {
+                    exportBtn.addEventListener('click', function() {
+                        const patientId = patientSelect.value;
+                        if (patientId) {
+                            window.location.href = `/accounts/export/patient/${patientId}/`;
+                        }
+                    });
+                }
+            });
+        </script>
+
+{% endblock %}

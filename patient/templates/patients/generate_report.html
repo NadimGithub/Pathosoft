@@ -1,0 +1,326 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block title %}Test Report{% endblock %} 
+
+{% block content %}
+
+<!-- ======================== MAIN CONTAINER ======================== -->
+<link rel="stylesheet" href="{% static 'css/generate_report.css' %}">
+
+<div class="container-fluid my-5 d-flex justify-content-center">
+    <!-- ===== Test Report Card ===== -->
+    <div class="card lab-card shadow-lg border-0 rounded-4 w-100">
+
+        <!-- ===== Card Header ===== -->
+        <div class="card-header d-flex align-items-center justify-content-between rounded-top-4">
+            <h4 class="mb-0 text-white">
+                <i class="fa-solid fa-file-medical me-2"></i> Test Report
+            </h4>
+            <a href="{% url 'view_patients' %}" class="btn btn-primary design btn-sm fw-semibold rounded-pill px-3 hover-glow">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+        <!-- ===== Card Body ===== -->
+        <div class="card-body p-4">
+
+            <!-- ===== Patient Info Section ===== -->
+            <div class="form-wrapper mb-4" style="border: 1px solid #333131; padding: 20px; border-radius: 10px;">
+                <div class="row mb-3">
+                    <div class="col-md-5"><strong>Patient Name:</strong> {{ patient.title }} {{ patient.patient_name }}</div>
+                    <div class="col-md-4"><strong>Mobile:</strong> {{ patient.mobile_number }}</div>
+                    <div class="col-md-3"><strong>Age:</strong> {{ patient.age }}</div>
+                   
+              
+                </div>
+                <div class="row">
+                    <div class="col-md-5"><strong>Doctor:</strong> {% if patient.doctor %}
+                                    {{ patient.doctor.doctor_name }}
+                                {% else %}
+                                    My Self
+                                {% endif %}</div>
+                    <div class="col-md-4"><strong>Date:</strong> {{ patient.sample_date }}</div>
+                     <div class="col-md-3"><strong>Gender:</strong> {{ patient.gender }}</div>
+
+                    <!-- <div class="col-md-4"><strong>Lab No:</strong> {{ patient.lab.lab_name }}</div> -->
+
+
+                </div>
+            </div>
+
+            <!-- ===== Test Table ===== -->
+            <form method="POST">
+                {% csrf_token %}
+                <div class="table-container">
+                    <table class="table table-bordered table-sm align-middle shadow-sm">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>S.No</th>
+                                <th>Test</th>
+                                <th>Result</th>
+                                <th>Units</th>
+                                <th>Normal Range</th>
+                                <th>Notes</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for group, tests in grouped_tests.items %}
+                            <tr class="bg-light fw-semibold text-primary">
+                                <td colspan="7">{{ group }}</td>
+                            </tr>
+
+                            {% for t in tests %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ t.test.test_name }}</td>
+                                <td>
+                                    <input type="text" step="any" name="result_{{ t.id }}" value="{{ t.result_value|default_if_none:'' }}" class="form-control shadow-sm result-input" data-lower="{{ t.test.lower_range|default_if_none:'' }}" data-upper="{{ t.test.upper_range|default_if_none:'' }}">
+                                </td>
+                                <td>{{ t.test.units }}</td>
+                                <td>
+                                    {% if t.test.lower_range or t.test.upper_range %} {{ t.test.lower_range|default:"" }} – {{ t.test.upper_range|default:"" }} {% else %} {{ t.test.normal_range|default:"-" }} {% endif %}
+                                </td>
+                                <td><input type="text" name="notes_{{ t.id }}" value="{{ t.notes|default_if_none:'' }}" class="form-control shadow-sm"></td>
+                                <td><input type="text" name="remarks_{{ t.id }}" value="{{ t.remarks|default_if_none:'' }}" class="form-control shadow-sm"></td>
+                            </tr>
+                            {% endfor %} {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ===== BILLING SUMMARY ===== -->
+                <div class="billing-summary mt-4 mb-4 p-3 rounded-3 shadow-sm">
+                    <h5 class="summary-title mb-3">Billing Summary</h5>
+
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <label>Basic Amount</label>
+                            <input type="text" class="form-control" value="{{ patient.basic_amount }}" readonly>
+                        </div>
+                        <div class="summary-item">
+                            <label>Discount</label>
+                            <input type="text" class="form-control" value="{{ patient.discount }}" readonly>
+                        </div>
+                        <div class="summary-item">
+                            <label>Net Amount</label>
+                            <input type="text" class="form-control" value="{{ patient.total_amount }}" readonly>
+                        </div>
+                        <div class="summary-item">
+                            <label>Paid Amount</label>
+                            <input type="text" class="form-control" value="{{ patient.paid_amount }}" readonly>
+                        </div>
+                        <div class="summary-item">
+                            <label>Balance</label>
+                            <input type="text" class="form-control" value="{{ patient.balance_amount }}" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== Action Buttons ===== -->
+                <div class="form-wrapper d-flex justify-content-end align-items-center gap-2">
+                    <button type="submit" class="btn first rounded-pill fw-semibold px-4">
+            <i class="fa-solid fa-rotate me-1"></i> Update
+          </button>
+                    <a href="{% url 'print_test_report' patient.patient_id %}" target="_blank" class="btn btn-success rounded-pill fw-semibold px-4">
+                        <i class="fa-solid fa-print me-1"></i> Print
+                    </a>
+                    <a href="{% url 'view_patients' %}" class="btn btn-secondary rounded-pill fw-semibold px-4">
+                        <i class="fa-solid fa-xmark me-1"></i> Close
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ====================== RANGE CHECK SCRIPT ====================== -->
+<script>
+(function() {
+    function parseNumber(val) {
+        if (val === null || val === undefined) return NaN;
+        val = String(val).replace(/,/g, '').trim();
+        if (val === '') return NaN;
+        return Number(val);
+    }
+
+    function checkRangeForInput(input) {
+        if (!input) return;
+        const td = input.closest('td');
+        if (!td) return;
+
+        const rawValue = String(input.value || '').trim().toLowerCase();
+        const value = parseNumber(rawValue);
+        const lower = parseNumber(input.getAttribute('data-lower'));
+        const upper = parseNumber(input.getAttribute('data-upper'));
+
+        // Remove old highlight classes
+        td.classList.remove('highlight-low', 'highlight-normal');
+
+        // ✅ Handle + / - text values
+        if (rawValue === '+' || rawValue === 'positive' || rawValue === '(+)' ) {
+           td.classList.add('highlight-low'); // red
+            return;
+        } 
+        if (rawValue === '-' || rawValue === 'negative' || rawValue === '(-)' ) {
+            
+             td.classList.add('highlight-normal'); // green
+            return;
+        }
+
+        // ✅ If not +/-, continue with numeric check
+        if (isNaN(value)) return;
+
+        const hasLower = !isNaN(lower);
+        const hasUpper = !isNaN(upper);
+        let isOutOfRange = false;
+
+        if ((hasLower && value < lower) || (hasUpper && value > upper)) {
+            isOutOfRange = true;
+        }
+
+        if (isOutOfRange) {
+            td.classList.add('highlight-low'); // red
+        } else if (hasLower || hasUpper) {
+            td.classList.add('highlight-normal'); // green
+        }
+    }
+
+    // ✅ Event listeners
+    document.addEventListener('focusout', function(e) {
+        const el = e.target;
+        if (el.classList && el.classList.contains('result-input')) {
+            setTimeout(() => checkRangeForInput(el), 0);
+        }
+    }, true);
+
+    document.addEventListener('change', function(e) {
+        const el = e.target;
+        if (el.classList && el.classList.contains('result-input')) {
+            checkRangeForInput(el);
+        }
+    }, true);
+
+    document.addEventListener('keydown', function(e) {
+        const el = e.target;
+        if (!(el.classList && el.classList.contains('result-input'))) return;
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            checkRangeForInput(el);
+            const all = Array.from(document.querySelectorAll('.result-input'));
+            const idx = all.indexOf(el);
+            if (idx !== -1 && idx + 1 < all.length) {
+                all[idx + 1].focus();
+                if (typeof all[idx + 1].select === 'function') all[idx + 1].select();
+            }
+        }
+    });
+
+    // ✅ On page load, check all inputs
+    document.addEventListener('DOMContentLoaded', function() {
+        const all = document.querySelectorAll('.result-input');
+        all.forEach(inp => checkRangeForInput(inp));
+    });
+})();
+</script>
+
+
+<!-- ====================== STYLES ====================== -->
+<style>
+    .highlight-low {
+        background-color: #e72b2b !important;
+        /* red for out of range */
+        transition: background 0.3s ease;
+    }
+    
+    .highlight-normal {
+        background-color: #24bb1a !important;
+        /* green for within range */
+        transition: background 0.3s ease;
+    }
+    
+    .billing-summary {
+        border: 1px solid #666262;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border-radius: 10px;
+        padding: 20px;
+    }
+    
+    .summary-title {
+        color: #000000;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 8px;
+    }
+    
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .summary-item {
+        position: relative;
+    }
+    
+    .summary-item {
+        position: relative;
+    }
+    
+    .summary-item input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid #000000;
+        background: rgba(5, 5, 5, 0.05);
+        /* Transparent background */
+        color: #5f5c5c;
+        transition: all 0.3s ease;
+        cursor: not-allowed;
+    }
+    /* 🔹 Blur glass effect + glowing border */
+    
+    .summary-item input:focus {
+        outline: none;
+        border-color: #5939e4;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(6px);
+        /* Blur behind */
+        -webkit-backdrop-filter: blur(6px);
+        box-shadow: 0 0 6px rgba(89, 57, 228, 0.6);
+    }
+    /* 🔹 Read Only hint */
+    
+    .summary-item input:focus::after {
+        content: "Read Only";
+        position: absolute;
+        bottom: -18px;
+        left: 8px;
+        font-size: 10px;
+        color: #bbb;
+        font-style: italic;
+        letter-spacing: 0.3px;
+    }
+    /* Optional hover glow */
+    
+    .summary-item input:hover {
+        border-color: #666;
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    #net_amount {
+        font-weight: bold;
+        color: #00e676;
+    }
+    
+    #balance {
+        font-weight: bold;
+        color: #ff5252;
+    }
+</style>
+
+{% endblock %}

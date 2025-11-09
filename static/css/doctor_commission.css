@@ -1,0 +1,27 @@
+    /* Make text visible inside the select and dropdown list */
+    
+    select,
+    option {
+        color: white;
+        background-color: transparent;
+    }
+    
+    select#doctorName,
+    select#doctorName option {
+        color: #000 !important;
+        background-color: #fff !important;
+    }
+    /* Fix for dark mode or gradient card backgrounds */
+    
+    .form-select {
+        background-color: #fff !important;
+        color: #000 !important;
+        border: 1px solid #ccc;
+    }
+    /* Optional: improve hover style */
+    
+    select#doctorName option:hover,
+    select#doctorName:focus option:checked {
+        background-color: #e9ecef !important;
+        color: #000 !important;
+    }

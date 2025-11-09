@@ -1,0 +1,111 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Receipt Slip</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  body { font-family: Arial, Helvetica, sans-serif; margin: 0; color: #111; }
+  .container { width: 210mm; max-width: 180mm; margin: 10px auto; padding: 8px; border: 3px solid #000; box-sizing: border-box; }
+  .header { text-align: center; padding: 6px 0; }
+  .lab-name { color: #d21b1b; font-weight: 700; font-size: 22px; margin-bottom: 2px; }
+  .address { font-size: 11px; color: #333; }
+  .top-grid { display: flex; justify-content: space-between; margin-top: 6px; border: 1px solid #000; }
+  .left, .right { padding: 8px; box-sizing: border-box; }
+  .left { width: 68%; border-right: 1px solid #000; }
+  .right { width: 31%; }
+  .field { font-size: 12px; margin-bottom: 5px; }
+  .field strong { display:inline-block; width: 90px; }
+  .tests { border-top: 1px solid #000; margin-top: 6px; }
+  table.items { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  table.items th, table.items td { border: 1px solid #000; padding: 6px; font-size: 12px; vertical-align: top; }
+  table.items th { background: #f3f3f3; text-align: left; }
+  .test-desc { font-size: 11px; color: #333; }
+  .summary { display:flex; margin-top: 8px; }
+  .summary div { flex: 1; border: 1px solid #000; padding: 6px; font-size: 12px; text-align:center; }
+  .amount-words { margin-top: 8px; font-size: 12px; }
+  .footer { margin-top: 12px; display:flex; justify-content:space-between; align-items:center; }
+  .signature { text-align:right; font-size:12px; }
+  .small { font-size: 11px; color: #555; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="lab-name">{{ patient.lab.lab_name }}</div>
+      <div class="address">{{ patient.lab.address }} | {{ patient.lab.contact_no }}</div>
+      <div class="small" style="margin-top: 10px;">PAYMENT RECEIPT</div>
+    </div>
+
+    <div class="top-grid">
+      <div class="left">
+        <div class="field"><strong>Patient Name :</strong> {{ patient.patient_name }}</div>
+        <div class="field"><strong>Phone :</strong> {{ patient.mobile_number }}</div>
+        <div class="field"><strong>Ref. Doctor:</strong> {% if patient.doctor %}
+                      {{ patient.doctor.doctor_name }}
+                  {% else %}
+                      My Self
+                  {% endif %}</div>
+        <div class="field"><strong>Sample Date :</strong> {{ patient.sample_date }}</div>
+      </div>
+      <div class="right">
+         <div class="field"><strong>Inv No. :</strong> {{ patient.patient_id }}</div>
+         <div class="field"><strong>Age :</strong> {{ patient.age }} / Year</div>
+        <div class="field"><strong>Gender :</strong> {{ patient.gender }}</div>
+        <div class="field"><strong>Date :</strong> {{ date }}</div>
+      </div>
+    </div>
+
+    <div class="tests">
+      <table class="items">
+        <thead>
+          <tr>
+            <th>S.N</th>
+            <th>Test Name</th>
+            <th style="text-align:center;">Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for g in grouped_tests %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ g.test__test_group__group_name }}</td>
+            <td style="text-align:center;">{{ g.total_cost }} Rs.</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="3" class="text-center">No tests found</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="summary">
+      <div>Basic Amt<br><strong>{{ patient.basic_amount }} Rs.</strong></div>
+      <div>Extra<br><strong>{{ patient.extra_cost }} Rs.</strong></div>
+      <div>Discount<br><strong>{{ patient.discount }} Rs.</strong></div>
+      <div>Net Amt<br><strong>{{ patient.total_amount }} Rs.</strong></div>
+      <div>Paid<br><strong>{{ patient.paid_amount }} Rs.</strong></div>
+      <div>Balance<br><strong>{{ patient.balance_amount }} Rs.</strong></div>
+    </div>
+
+    <div class="amount-words">
+      <strong>Amount In Words:</strong> {{ patient.total_amount }} Rupees Only
+    </div>
+
+    <div class="footer">
+      <div class="small"></div>
+      <div class="signature"  style="margin-top: 50px;">
+       
+        <div style="text-align: center;">_______________________</div>
+        <div style="text-align: center;"><span>Mr. Shoyeb Pathan<br>B.Sc (Micro), D.M.L.T, MSBTE (Mumbai)</span></div>
+        <div class="small" style="text-align: center;">For {{ patient.lab.lab_name }}<br><em>(AUTHORIZED SIGNATORY)</em></div>
+
+      </div>
+    </div>
+  </div>
+  <script>
+    window.print();
+  </script>
+</body>
+</html>

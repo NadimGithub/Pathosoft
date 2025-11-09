@@ -1,0 +1,111 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Create User{% endblock %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/form-style.css' %}">
+<link rel="stylesheet" href="{% static 'css/dropdown.css' %}">
+<link rel="stylesheet" href="{% static 'css/edit_user.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.6.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+
+<div class="container-fluid my-5 d-flex justify-content-center">
+
+    <div class="card lab-card shadow-lg border-0 rounded-4 w-90">
+        <div class="card-header d-flex align-items-center justify-content-between rounded-top-4">
+            <h4 class="mb-0 text-white">
+                <i class="fa-solid fa-user-plus me-2"></i> Create User
+            </h4>
+            <a href="{% url 'view_users' %}" class="btn btn-primary design btn-sm fw-semibold rounded-pill px-3 hover-glow">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+        <div class="card-body p-4">
+            <form method="post" class="row g-4" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="col-md-6">
+                    <label for="full_name" class="form-label fw-semibold">Full Name</label>
+                    <input type="text" id="full_name" name="full_name" class="form-control shadow-sm" placeholder="Enter Full Name" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="username" class="form-label fw-semibold">Username</label>
+                    <input type="text" id="username" name="username" class="form-control shadow-sm" placeholder="Enter Username" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="email" class="form-label fw-semibold">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control shadow-sm" placeholder="Enter Email" required oninput="validateEmail(this)">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="mobile_no" class="form-label fw-semibold">Mobile No</label>
+                    <input type="text" id="mobile_no" name="mobile_no" class="form-control shadow-sm" placeholder="Enter Mobile Number" pattern="[0-9]{10}" maxlength="10" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="test_group" class="form-label fw-semibold">Lab</label>{{ form.lab }}
+                </div>
+
+                <div class="col-md-6 password-toggle">
+                    <label for="password1" class="form-label fw-semibold">Password</label>
+                    <div class="input-affix">
+                        <input type="password" id="password1" name="password1" class="form-control shadow-sm" placeholder="Enter Password" required>
+                        <i class="fa-solid fa-eye toggle-password" id="togglePassword1" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+                <div class="col-md-6 password-toggle">
+                    <label for="password2" class="form-label fw-semibold">Confirm Password</label>
+                    <div class="input-affix">
+                        <input type="password" id="password2" name="password2" class="form-control shadow-sm" placeholder="Confirm Password" required>
+                        <i class="fa-solid fa-eye toggle-password" id="togglePassword2" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="role" class="form-label fw-semibold">Profile Role</label>
+                    <select id="role" name="role" class="form-select shadow-sm" required>
+                    <option value="">-- Select Role --</option>
+                    {% if user.is_superuser or user.role == "admin" %}
+                    <option value="admin">Admin</option>
+                    {% endif %}
+                    <option value="lab_technician">Lab Technician</option>
+                    <option value="lab_admin">Lab Administrator</option>
+                </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="qualification" class="form-label fw-semibold">Qualification</label>
+                    <input type="text" id="qualification" name="qualification" class="form-control shadow-sm" placeholder="Enter Qualification">
+                </div>
+                <div class="col-md-6">
+                    <label for="profile_image" class="form-label fw-semibold">Profile Image (Optional)</label>
+                    <input type="file" id="profile_image" name="profile_image" class="form-control shadow-sm">
+                </div>
+
+                <div class="col-md-12">
+                    <label for="address" class="form-label fw-semibold">Address</label>
+                    <textarea id="address" name="address" class="form-control shadow-sm" rows="3" placeholder="Enter Address"></textarea>
+                </div>
+
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn first px-5 py-2 rounded-pill fw-semibold submit-btn">
+        <i class="bi bi-save me-2"></i> Save User
+      </button>
+                </div>
+
+            </form>
+        </div>
+
+
+    </div>
+</div>
+
+<script src="{% static 'js/edit_user.js' %}"></script>
+
+
+{% endblock %}

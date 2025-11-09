@@ -1,0 +1,212 @@
+/* Dashboard Content Wrapper */
+
+.dashboard-content {
+    padding: 20px;
+    background: #f5f7fa;
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    /* Adjust based on navbar height */
+    box-sizing: border-box;
+}
+
+
+/* Card Wrapper */
+
+.card-wrapper {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Page Title */
+
+.card-wrapper .page-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+
+/* Table Controls (Search + Filters) */
+
+.card-wrapper .table-controls {
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow wrapping */
+    gap: 10px;
+    width: 100%;
+    /* Full width of card */
+    box-sizing: border-box;
+}
+
+
+/* Search Input */
+
+.card-wrapper .search-input {
+    padding: 10px 15px;
+    width: 100%;
+    /* Always 100% of available space */
+    max-width: 300px;
+    /* Optional: max width on larger screens */
+    min-width: 150px;
+    /* Optional: minimum width */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    flex: 1 1 auto;
+    /* Flexible: can shrink or grow */
+    box-sizing: border-box;
+}
+
+.card-wrapper .search-input:focus {
+    border-color: #3f51b5;
+    box-shadow: 0 0 5px rgba(63, 81, 181, 0.3);
+}
+
+
+/* Table Wrapper */
+
+.card-wrapper .table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+}
+
+
+/* Lab Table */
+
+.card-wrapper .lab-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+
+/* Table Head */
+
+.card-wrapper .lab-table thead {
+    background: #3f51b5;
+    color: white;
+}
+
+
+/* Table Cells */
+
+.card-wrapper .lab-table th,
+.card-wrapper .lab-table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+
+/* Table Rows */
+
+.card-wrapper .lab-table tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+    transition: background 0.2s;
+}
+
+.card-wrapper .lab-table tbody tr:hover {
+    background: #f0f0f0;
+}
+
+
+/* Status Badges */
+
+.card-wrapper .status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+}
+
+.card-wrapper .status.active {
+    background: #4caf50;
+}
+
+.card-wrapper .status.closed {
+    background: #f44336;
+}
+
+
+/* Action Buttons */
+
+.card-wrapper .action-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.card-wrapper .action-btn.edit {
+    color: #3f51b5;
+}
+
+.card-wrapper .action-btn.edit:hover {
+    background: rgba(63, 81, 181, 0.1);
+}
+
+.card-wrapper .action-btn.delete {
+    color: #f44336;
+}
+
+.card-wrapper .action-btn.delete:hover {
+    background: rgba(244, 67, 54, 0.1);
+}
+
+
+/* Pagination */
+
+.card-wrapper .pagination {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.card-wrapper .page-btn {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.card-wrapper .page-btn.active {
+    background: #3f51b5;
+    color: white;
+    border-color: #3f51b5;
+}
+
+.card-wrapper .page-btn:hover {
+    background: #e0e0e0;
+}
+
+
+/* Responsive Adjustments */
+
+@media (max-width: 768px) {
+    .card-wrapper .table-controls {
+        flex-direction: column;
+        gap: 10px;
+        /* Stack search input and other controls */
+    }
+    .card-wrapper .search-input {
+        width: 100%;
+        /* Full width on small screens */
+    }
+    .card-wrapper .lab-table th,
+    .card-wrapper .lab-table td {
+        padding: 10px;
+        font-size: 13px;
+    }
+}

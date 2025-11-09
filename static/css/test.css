@@ -1,0 +1,73 @@
+  /* 🔹 Ledger Filter Styling */
+  
+  .ledger-filter {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ledger-filter-form {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+  }
+  
+  .ledger-filter-form .form-label {
+      font-weight: 600;
+      margin-bottom: 0;
+      color: #333;
+  }
+  
+  .filter-date {
+      min-width: 200px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #ced4da;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .filter-date:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25);
+  }
+  /* 🔸 Buttons */
+  
+  .btn-search,
+  .btn-clear {
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+  }
+  
+  .btn-search {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+  }
+  
+  .btn-search:hover {
+      background-color: #0056b3;
+  }
+  
+  .btn-clear {
+      background-color: #6c757d;
+      color: #fff;
+      text-decoration: none;
+  }
+  
+  .btn-clear:hover {
+      background-color: #5a6268;
+      color: #fff;
+  }
+  /* Make it responsive */
+  
+  @media (max-width: 576px) {
+      .ledger-filter-form {
+          flex-direction: column;
+          align-items: stretch;
+      }
+  }

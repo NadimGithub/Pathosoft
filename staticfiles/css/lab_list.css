@@ -1,0 +1,268 @@
+/* =================== LAB LIST PAGE =================== */
+
+
+/* ===== Global Page ===== */
+
+body {
+    background: linear-gradient(135deg, #f7f7fc, #eef1ff);
+    font-family: "Poppins", sans-serif;
+    overflow-x: hidden;
+}
+
+
+/* ===== Card Layout ===== */
+
+.card {
+    width: 100%;
+    max-width: 1600px;
+    background: #fff;
+    border-radius: 1.2rem;
+    box-shadow: 0 8px 25px rgba(67, 35, 135, 0.15);
+    overflow: hidden;
+    position: relative;
+}
+
+
+/* ===== Card Header ===== */
+
+.card-header {
+    background: linear-gradient(135deg, #09123b, #4240ad, #4284b9);
+    border-top-left-radius: 1.2rem !important;
+    border-top-right-radius: 1.2rem !important;
+    padding: 0.6rem 1.2rem;
+    box-shadow: 0 4px 15px rgba(91, 46, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.card-header h4 {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+
+/* ===== Search Bar ===== */
+
+.search-bar {
+    flex: 1;
+    max-width: 320px;
+    margin: 0 auto;
+    position: relative;
+    animation: fadeInUp 0.6s ease-in-out;
+}
+
+.search-bar input {
+    width: 100%;
+    border-radius: 50px;
+    border: none;
+    padding: 0.45rem 2.5rem 0.45rem 1rem;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(91, 46, 255, 0.2);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+    box-shadow: 0 6px 14px rgba(91, 46, 255, 0.35);
+}
+
+.search-bar i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #5b2eff;
+    font-size: 1rem;
+}
+
+
+/* ===== Buttons ===== */
+
+.btn-primary,
+.btn-warning,
+.btn-danger {
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    font-weight: 500;
+    padding: 0.4rem 1rem;
+}
+
+.btn-primary {
+    background: rgb(252, 249, 249);
+    color: black;
+    box-shadow: 0 5px 15px rgba(91, 46, 255, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px linear-gradient(135deg, #09123b, #4240ad, #4284b9);
+}
+
+.first {
+    background: #16297c;
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.first:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(186, 207, 224, 0.4) !important;
+    border: 1px solid #4284b9 !important;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffb300, #ffca28);
+}
+
+.btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 179, 0, 0.4);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #e53935, #ef5350);
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(239, 83, 80, 0.4);
+}
+
+
+/* ===== Table Container ===== */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 10px;
+    border-radius: 0.6rem;
+    animation: fadeInUp 0.7s ease;
+}
+
+
+/* ===== Table Styling ===== */
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid #dcdcff;
+    border-radius: 0.6rem;
+    margin-bottom: 10px;
+}
+
+.table thead {
+    background: linear-gradient(90deg, #5b2eff, #8230ff);
+    color: #fff;
+}
+
+.table th,
+.table td {
+    vertical-align: middle !important;
+    text-align: center;
+    padding: 0.85rem;
+    font-size: 0.93rem;
+    border: 1px solid #e8e8ff;
+}
+
+.table-hover tbody tr:hover {
+    background: #f6f3ff;
+    transform: scale(1.005);
+}
+
+
+/* ===== Pagination Styling ===== */
+
+.pagination {
+    display: flex !important;
+    justify-content: center !important;
+    margin: 20px auto !important;
+    padding: 10px 0;
+    background: transparent !important;
+}
+
+.page-item .page-link {
+    border-radius: 50px !important;
+    margin: 0 5px;
+    color: #5b2eff;
+    font-weight: 500;
+    border: 1px solid #cfc2ff;
+    background: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(91, 46, 255, 0.15);
+}
+
+.page-item.active .page-link,
+.page-item .page-link:hover {
+    background: linear-gradient(135deg, #5b2eff, #8230ff);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(91, 46, 255, 0.4);
+    transform: scale(1.05);
+}
+
+
+/* ===== Animations ===== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ===== Responsive ===== */
+
+@media (max-width: 992px) {
+    .card-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.8rem;
+    }
+    .search-bar {
+        max-width: 100%;
+    }
+    .pagination {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+
+/* ===== Fix Action Buttons in Table (Responsive) ===== */
+
+.table td .btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    min-width: 34px;
+}
+
+
+/* Keep buttons in a single row even on smaller screens */
+
+@media (max-width: 768px) {
+    .table td {
+        white-space: nowrap;
+        /* Prevent wrapping inside table cells */
+    }
+    .table td .btn {
+        padding: 0.35rem 0.55rem;
+        font-size: 0.8rem;
+    }
+    .table td .btn i {
+        font-size: 0.8rem;
+    }
+}

@@ -1,0 +1,28 @@
+ .alert {
+     border-left: 5px solid;
+ }
+ 
+ .alert-info {
+     border-left-color: #0dcaf0;
+ }
+ 
+ .alert-warning {
+     border-left-color: #ffc107;
+ }
+ 
+ .alert ol,
+ .alert ul {
+     padding-left: 1rem;
+ }
+ 
+ .alert li {
+     margin-bottom: 0.5rem;
+ }
+ 
+ .alert li:last-child {
+     margin-bottom: 0;
+ }
+ 
+ .btn-success {
+     transition: all 0.3s ease;
+ }

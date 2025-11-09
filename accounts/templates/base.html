@@ -1,0 +1,362 @@
+<!-- templates/index.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}24HRS Lab Dashboard{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'bootstrap css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'bootstrap css/fontawesome-free-7.1.0-web/css/all.min.css' %}">
+    
+
+    <!-- Chart.js -->
+    <script src="{% static 'offlinejs/chart.js' %}"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/changepass.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    <!-- Bootstrap Icons (CDN) -->
+    <!-- <link rel="stylesheet"href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> -->
+
+
+    <script>
+        setTimeout(() => {
+            const popup = document.getElementById('message-popup');
+            if (popup) popup.remove();
+        }, 5000);
+    </script>
+    <style>
+        footer {
+    background: #f8f9fa;
+    color: #555;
+    font-size: 14px;
+    border-top: 1px solid #ddd;
+}
+footer strong {
+    color: #0d6efd;
+}
+
+.modal-backdrop {
+  display: none !important;
+}
+    </style>
+
+    <style>
+.password-field {
+    position: relative;
+}
+.password-field input {
+    width: 100%;
+    padding-right: 35px; /* space for icon */
+}
+.password-field .toggle-eye {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+}
+.password-field .toggle-eye:hover {
+    color: #000;
+}
+</style>
+
+
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar d-flex flex-column">
+        <div class="sidebar-header d-flex align-items-center px-3 py-3">
+            <img src="{% static 'images/lab.png' %}" alt="PathoLab" class="logo-img me-2">
+            <div class="logo-text">
+                <div class="fw-semibold">24 HRS</div>
+                <div class="small">Laboratory</div>
+            </div>
+            <button id="sidebar-close" class="btn btn-sm btn-link text-light ms-auto d-lg-none">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+
+        <nav class="nav flex-column px-1 py-2">
+            <a href="{% url 'dashboard' %}" class="nav-link text-white d-flex align-items-center">
+                <i class="fa-solid fa-house me-2 fs-6"></i>
+                <span class="nav-label">Dashboard</span>
+            </a>
+
+           {% if request.user.is_superuser or request.user.role == "admin" %}
+            <div class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center" data-bs-toggle="collapse" href="#labsMenu">
+                    <i class="fa-solid fa-flask me-2 fs-6"></i>
+                    <span class="nav-label">Labs</span>
+                    <!-- <i class="bi bi-chevron-down ms-auto toggle-icon"></i> -->
+                </a>
+                <div class="collapse" id="labsMenu">
+                    <ul class="list-unstyled ps-4">
+                        <li><a href="{% url 'lab_list' %}" class="nav-link text-secondary small">View Labs</a></li>
+                        <li><a href="{% url 'lab_create' %}" class="nav-link text-secondary small">Add Lab</a></li>
+                    </ul>
+                </div>
+            </div>
+           {% endif %}
+
+
+            <div class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center" data-bs-toggle="collapse" href="#doctorsMenu">
+                    <i class="fa-solid fa-user-doctor me-2 fs-6"></i>
+                    <span class="nav-label">Doctors</span>
+                    <!-- <i class="fa-solid fa-chevron-down ms-auto toggle-icon"></i> -->
+                </a>
+                <div class="collapse" id="doctorsMenu">
+                    <ul class="list-unstyled ps-4">
+                        <li><a href="{% url 'view_doctors' %}" class="nav-link text-secondary small">View Doctors</a></li>
+                        <li><a href="{% url 'add_doctor' %}" class="nav-link text-secondary small">Add Doctor</a></li>
+                        <li><a href="{% url 'doctor_commission' %}" class="nav-link text-secondary small">Doctor Commission</a></li>
+                        <li><a href="{% url 'doctor_ledger_list' %}" class="nav-link text-secondary small">Doctor Ledger</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center" data-bs-toggle="collapse" href="#patientsMenu">
+                    <i class="fa-solid fa-hospital-user me-2 fs-6"></i>
+                    <span class="nav-label">Patients</span>
+                    <!-- <i class="fa-solid fa-chevron-down ms-auto toggle-icon"></i> -->
+                </a>
+                <div class="collapse" id="patientsMenu">
+                    <ul class="list-unstyled ps-4">
+                        <li><a href="{% url 'view_patients' %}" class="nav-link text-secondary small">View Patients</a></li>
+                        <li><a href="{% url 'add_patient' %}" class="nav-link text-secondary small">Add Patient</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center" data-bs-toggle="collapse" href="#testsMenu">
+                    <i class="fa-solid fa-vial me-2 fs-6"></i>
+                    <span class="nav-label">Tests</span>
+                    <!-- <i class="fa-solid fa-chevron-down ms-auto toggle-icon"></i> -->
+                </a>
+                <div class="collapse" id="testsMenu">
+                    <ul class="list-unstyled ps-4">
+                        <li><a href="{% url 'department_list' %}" class="nav-link text-secondary small">View Departments</a></li>
+                        <li><a href="{% url 'department_create' %}" class="nav-link text-secondary small">Add Department</a></li>
+                        <li><a href="{% url 'view_test_groups' %}" class="nav-link text-secondary small">View Test Groups</a></li>
+                        <li><a href="{% url 'add_test_group' %}" class="nav-link text-secondary small">Add Test Group</a></li>
+                        <li><a href="{% url 'method_list' %}" class="nav-link text-secondary small">View Methods</a></li>
+                        <li><a href="{% url 'method_add' %}" class="nav-link text-secondary small">Add Method</a></li>
+                        <li><a href="{% url 'view_tests' %}" class="nav-link text-secondary small">View Tests</a></li>
+                        <li><a href="{% url 'add_test' %}" class="nav-link text-secondary small">Add Test</a></li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center" data-bs-toggle="collapse" href="#accountsMenu">
+                    <i class="fa-solid fa-file-medical me-2 fs-6"></i>
+                    <span class="nav-label">Accounts</span>
+                    <!-- <i class="fa-solid fa-chevron-down ms-auto toggle-icon"></i> -->
+                </a>
+                <div class="collapse" id="accountsMenu">
+                    <ul class="list-unstyled ps-4">
+                        <li><a href="{% url 'create_user' %}" class="nav-link text-secondary small">Create User</a></li>
+                        <li><a href="{% url 'view_users' %}" class="nav-link text-secondary small">View Users</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center" data-bs-toggle="collapse" href="#backupMenu">
+                    <i class="fa-solid fa-file-medical me-2 fs-6"></i>
+                    <span class="nav-label">Backup</span>
+
+                </a>
+                <div class="collapse" id="backupMenu">
+                    <ul class="list-unstyled ps-4">
+                        <li><a href="{% url 'backup_form' %}" class="nav-link text-secondary small">Take Backup</a></li>
+                        <li><a href="{% url 'restore_form' %}" class="nav-link text-secondary small">Restore Backup</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </nav>
+    </aside>
+
+    <!-- overlay for mobile -->
+    <div id="overlay" class="overlay d-lg-none"></div>
+
+    <!-- Main content -->
+    <div id="main" class="main-content">
+        <!-- Topbar -->
+        <header class="py-3 px-3 border-bottom shadow-sm" style="background: linear-gradient(135deg, #09123b, #4240ad, #4284b9); color: white; position:sticky; top: 0; z-index: 100;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-3">
+                    <button id="menu-btn" class="btn btn-light btn-sm d-lg-none">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <!-- <h5 class="mb-0 d-none d-lg-block">24 HRS LAB</h5> -->
+                </div>
+
+                <div class="dropdown">
+                    <a id="profile-btn" class="d-flex align-items-center text-decoration-none" href="#" data-bs-toggle="dropdown">
+                            
+                        <img src="{{ request.user.display_image }}" alt="Profile" class="rounded-circle" width="40" height="40">
+
+                        <span class="ms-2 d-none d-md-inline text-white">
+                            {{ request.user.full_name|default:request.user.username }}
+                        </span>
+                    </a>
+
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="container-fluid ">
+            {% if messages %}
+            <div id="message-popup" class="popup-message">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %} {% block content %} {% endblock %}
+        </main>
+        <!-- 🌟 Profile Side Panel -->
+        <div id="profile-panel" class="profile-panel">
+            <div class="profile-header position-relative">
+                <button id="profile-close" class="btn btn-sm btn-link text-light position-absolute" style="top: 15px; right: 15px;" onclick="closeProfilePanel()">
+        <i class="fa-solid fa-times fs-5"></i>
+         </button>
+              
+                <img src="{{ request.user.display_image }}" alt="Profile" class="profile-avatar">
+
+                <h5>{{ request.user.full_name|default:request.user.username }}</h5>
+                <p class="text-muted small">{{ request.user.email }}</p>
+            </div>
+
+
+            <div class="profile-content">
+                <div class="profile-info">
+                    <p><i class="fa-solid fa-user me-2 text-primary"></i> Username: <span>{{ request.user.username }}</span></p>
+                    <p><i class="fa-solid fa-envelope me-2 text-primary"></i> Email: <span>{{ request.user.email }}</span></p>
+                    <p><i class="fa-solid fa-clock me-2 text-primary"></i> Joined: <span>{{ request.user.date_joined|date:"Y-m-d" }}</span></p>
+                </div>
+            </div>
+
+            <div class="profile-footer">
+                <button class="btn btn-outline-light w-100 mb-2" onclick="openChangePasswordModal()">
+            <i class="fa-solid fa-key me-2"></i> Change Password
+        </button>
+                <a href="{% url 'logout' %}" class="btn btn-danger w-100">
+                    <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+                </a>
+            </div>
+        </div>
+        <div id="profile-overlay" class="profile-overlay" onclick="closeProfilePanel()"></div>
+
+    </div>
+
+    <!-- 🌟 Footer -->
+        <footer class="text-center py-3 mt-4 border-top bg-light">
+            <small class="text-muted">
+                &copy; <span id="currentYear"></span> All Rights Reserved — Developed by 
+                <strong>Nadim Pathan</strong> &amp; <strong>Ashish Shinde</strong>
+            </small>
+        </footer>
+
+        <script>
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        </script>
+
+    <!-- Change Password Modal -->
+ <div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5>Change Password</h5>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+        </div>
+
+        <form id="changePasswordForm" method="post" action="{% url 'change_password' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Current Password</label>
+                <div class="password-field">
+                    <input type="password" id="current_password" name="current_password" class="form-control" required>
+                    <i class="fa-solid fa-eye-slash toggle-eye" onclick="togglePassword('current_password', this)"></i>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>New Password</label>
+                <div class="password-field">
+                    <input type="password" id="new_password" name="new_password" class="form-control" required>
+                    <i class="fa-solid fa-eye-slash toggle-eye" onclick="togglePassword('new_password', this)"></i>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <div class="password-field">
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                    <i class="fa-solid fa-eye-slash toggle-eye" onclick="togglePassword('confirm_password', this)"></i>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn-update">Update Password</button>
+                <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+function togglePassword(id, icon) {
+    const input = document.getElementById(id);
+    const isHidden = input.type === "password";
+
+    input.type = isHidden ? "text" : "password";
+    icon.classList.toggle("fa-eye", isHidden);
+    icon.classList.toggle("fa-eye-slash", !isHidden);
+}
+function closeModal() {
+    document.getElementById("changePasswordModal").style.display = "none";
+}
+</script>
+
+    <!-- Bootstrap + Custom JS -->
+     
+    <script src="{%static 'offlinejs/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/changepass.js' %}"></script>
+    <script>
+        // 🌟 Open Profile Panel
+        document.getElementById('profile-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('profile-panel').classList.add('active');
+            document.getElementById('profile-overlay').classList.add('active');
+        });
+
+        // 🌟 Close Profile Panel
+        function closeProfilePanel() {
+            document.getElementById('profile-panel').classList.remove('active');
+            document.getElementById('profile-overlay').classList.remove('active');
+        }
+    </script>
+
+
+</body>
+
+</html>
+
+<!-- Content area -->
