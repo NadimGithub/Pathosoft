@@ -12,6 +12,10 @@ class LoginRequiredMiddleware:
             if not (path.startswith(reverse('login')) or
                     path.startswith('/admin/') or
                     path.startswith('/static/') or
+                    path.startswith(reverse('forgot_password')) or
+                    path.startswith('/reset-password/') or   # ✅ FIXED LINE
+                    path.startswith(reverse('password_reset_complete')) or
                     path.startswith(reverse('register'))):
+                    
                 return redirect('login')
         return self.get_response(request)

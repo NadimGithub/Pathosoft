@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %}Dashboard{% endblock %} {% block content %}
+{% extends 'base.html' %} {% block title %}PathoSoft | Dashboard{% endblock %} {% block content %}
 <style>
     /* 🌟 Base Layout */
     
@@ -198,16 +198,16 @@ body.modal-open {
 
         <div class="col-md-2 col-6 new-patient-link">
             <a href="{% url 'add_patient' %}" class="text-decoration-none">
-                <div class="card shadow-sm text-center p-3 hover-effect">
+                <div class="card shadow-sm text-center p-3 hover-effect d-flex align-items-center justify-content-center flex-row">
                     <i class="fas fa-user-plus fa-2x text-primary mb-2"></i>
-                    <h6 class="mb-0">New Patient</h6>
+                    <h6 class="mb-0 ms-2">New Patient</h6>
                 </div>
             </a>
         </div>
 
         <div class="col-md-2 col-6 add-test-link">
             <a href="{% url 'add_test' %}" class="text-decoration-none">
-                <div class="card shadow-sm text-center p-3 hover-effect">
+               <div class="card shadow-sm text-center p-3 hover-effect d-flex align-items-center justify-content-center flex-row">
                     <i class="fas fa-flask fa-2x text-success mb-2"></i>
                     <h6 class="mb-0">New Test</h6>
                 </div>
@@ -216,7 +216,7 @@ body.modal-open {
 
         <div class="col-md-2 col-6 view-patients-link">
             <a href="{% url 'view_patients' %}" class="text-decoration-none">
-                <div class="card shadow-sm text-center p-3 hover-effect">
+                <div class="card shadow-sm text-center p-3 hover-effect d-flex align-items-center justify-content-center flex-row">
                     <i class="fas fa-file-medical-alt fa-2x text-warning mb-2"></i>
                     <h6 class="mb-0">Patient Reports</h6>
                 </div>
@@ -225,7 +225,7 @@ body.modal-open {
 
         <div class="col-md-2 col-6 view-doctors-link">
             <a href="{% url 'view_doctors' %}" class="text-decoration-none">
-                <div class="card shadow-sm text-center p-3 hover-effect">
+               <div class="card shadow-sm text-center p-3 hover-effect d-flex align-items-center justify-content-center flex-row">
                     <i class="fas fa-user-md fa-2x text-info mb-2"></i>
                     <h6 class="mb-0">Doctors</h6>
                 </div>
@@ -234,7 +234,7 @@ body.modal-open {
 
         <div class="col-md-2 col-6 view-payments-link">
             <a href="{% url 'doctor_ledger_list' %}" class="text-decoration-none">
-                <div class="card shadow-sm text-center p-3 hover-effect">
+                <div class="card shadow-sm text-center p-3 hover-effect d-flex align-items-center justify-content-center flex-row">
                     <i class="fas fa-wallet fa-2x text-danger mb-2"></i>
                     <h6 class="mb-0">Payments</h6>
                 </div>
@@ -243,7 +243,7 @@ body.modal-open {
 
         <div class="col-md-2 col-6 view-export-link">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#exportModal">
-                <div class="card shadow-sm text-center p-3 hover-effect">
+                <div class="card shadow-sm text-center p-3 hover-effect d-flex align-items-center justify-content-center flex-row">
                     <i class="fas fa-file-excel fa-2x text-success mb-2"></i>
                     <h6 class="mb-0">Export Data</h6>
                 </div>

@@ -22,6 +22,11 @@ from doctor.models import Doctor
 import json
 from datetime import date, timedelta, datetime
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.template.loader import render_to_string
+from django.core.mail import send_mail, BadHeaderError
 
 @login_required
 def dashboard(request):
@@ -176,8 +181,8 @@ def logout_user(request):
     messages.success(request, "You have been logged out.")
     return redirect('login')
 
-def forgot_password(request):
-    return render(request, 'accounts/forgot_password.html')
+# def forgot_password(request):
+#     return render(request, 'accounts/forgot_password.html')
 
 @login_required
 def create_user(request):
@@ -680,6 +685,135 @@ def restore_backup(request):
             logger.error(f"Restore failed: {str(e)}", exc_info=True)
             messages.error(request, f"Restore failed: {e}")
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+from django.conf import settings
+
+User =CustomUser
+
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if not email:
+            messages.error(request, "Please enter your email address.")
+            return redirect("forgot_password")
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, "No user found with this email.")
+            return redirect("login")
+
+        # Create reset token and link
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        reset_link = f"http://{request.get_host()}/reset-password/{uid}/{token}/"
+
+        # Render HTML email
+        subject = "Password Reset Request"
+        message = render_to_string("accounts/password_reset_email.html", {
+            "user": user,
+            "reset_link": reset_link,
+        })
+
+        try:
+            send_mail(
+                subject,
+                "",
+                settings.DEFAULT_FROM_EMAIL,
+                [user.email],
+                html_message=message,  # Send as HTML
+            )
+            messages.success(request, 'Password reset link sent to your email.')
+        except Exception as e:
+            messages.error(request, f'Error sending email: {e}')
+
+        return redirect('login')
+
+    # Handle GET request: render the forgot password page
+    return render(request, 'accounts/forgot_password.html')
+
+# def forgot_password(request):
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         if not email:
+#             messages.error(request, "Please enter your email address.")
+#             return redirect("forgot_password")
+
+#         try:
+#             user = User.objects.get(email=email)
+#         except User.DoesNotExist:
+#             messages.error(request, "No user found with this email.")
+#             return redirect("forgot_password")
+
+#         # Create reset token and link
+#         token = default_token_generator.make_token(user)
+#         uid = urlsafe_base64_encode(force_bytes(user.pk))
+#         reset_link = f"http://{request.get_host()}/reset-password/{uid}/{token}/"
+
+#         # Render HTML email
+#         subject = "Password Reset Request"
+#         message = render_to_string("accounts/password_reset_email.html", {
+#             "user": user,
+#             "reset_link": reset_link,
+#         })
+
+#         try:
+#             send_mail(
+#                 subject,
+#                 "",
+#                 settings.DEFAULT_FROM_EMAIL,
+#                 [user.email],
+#                 html_message=message,  # Send as HTML
+#             )
+#             messages.success(request, 'Password reset link sent to your email.')
+#         except User.DoesNotExist:
+#             messages.error(request, 'No account found with that email.')
+
+#         return redirect('login')
+
+# def forgot_password(request):
+#     print("Enter into Forgot Password")
+#     if request.method == "POST":
+#         print("Post request")
+#         email = request.POST.get("email")
+#         if not email:
+#             messages.error(request, "Please enter your email address.")
+#             return redirect("forgot_password")
+
+#         try:
+#             user = User.objects.get(email=email)
+#         except User.DoesNotExist:
+#             messages.error(request, "No user found with this email.")
+#             return redirect("forgot_password")
+
+#         # Create reset token and link
+#         token = default_token_generator.make_token(user)
+#         uid = urlsafe_base64_encode(force_bytes(user.pk))
+#         reset_link = f"http://{request.get_host()}/reset-password/{uid}/{token}/"
+
+#         # Render HTML email
+#         subject = "Password Reset Request"
+#         message = render_to_string("accounts/password_reset_email.html", {
+#             "user": user,
+#             "reset_link": reset_link,
+#         })
+
+#         try:
+#             send_mail(
+#                 subject,
+#                 "",
+#                 settings.DEFAULT_FROM_EMAIL,
+#                 [user.email],
+#                 html_message=message,  # Send as HTML
+#             )
+#             messages.success(request, "Password reset link has been sent to your email.")
+#             return redirect("login")
+#         except BadHeaderError:
+#             messages.error(request, "Invalid header found.")
+#             return redirect("forgot_password")
+
+#     return render(request, "accounts/forgot_password.html")
 
 # from pydrive.auth import GoogleAuth
 # from pydrive.drive import GoogleDrive

@@ -27,7 +27,7 @@ body {
     top: 0;
     bottom: 0;
     width: var(--sidebar-width);
-    background: linear-gradient(135deg, #09123b, #4240ad, #4284b9);
+    background: linear-gradient(170deg, #09123b, #4240ad, #4284b9);
     color: #fff;
     z-index: 1050;
     transition: transform 280ms ease, width 280ms ease;

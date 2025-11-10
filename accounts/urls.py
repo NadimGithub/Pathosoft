@@ -2,13 +2,13 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.login_user, name='login'),
     path('login/', views.login_user, name='login'),
     path('register/', views.register_user, name='register'),
     path('logout/', views.logout_user, name='logout'),
-    path('forgot-password/', views.forgot_password, name='forgot_password'),
      path('dashboard/', views.dashboard, name='dashboard'),
      path('create/', views.create_user, name='create_user'),
     path('view/', views.view_users, name='view_users'),
@@ -28,4 +28,35 @@ urlpatterns = [
     path('take-backup/', views.take_backup, name='take_backup'),
     path('restore-backup/', views.restore_backup, name='restore_backup'),
     path('restore-from-upload/', views.restore_from_upload, name='restore_from_upload'),
+
+    path('forgot-password/', views.forgot_password, name='forgot_password'),
+
+    # Reset confirmation (Django built-in)
+    path('reset-password/<uidb64>/<token>/', 
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name='accounts/password_reset_confirm.html'
+         ), 
+         name='password_reset_confirm'),
+
+    path('reset-password-complete/',
+         auth_views.PasswordResetCompleteView.as_view(
+             template_name='accounts/password_reset_complete.html'
+         ),
+         name='password_reset_complete'),
+    # # Forgot password flow
+    # path('forgot-password/', auth_views.PasswordResetView.as_view(
+    #     template_name='accounts/password_reset.html'
+    # ), name='password_reset'),
+
+    # path('forgot-password-sent/', auth_views.PasswordResetDoneView.as_view(
+    #     template_name='accounts/password_reset_done.html'
+    # ), name='password_reset_done'),
+
+    # path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
+    #     template_name='accounts/password_reset_confirm.html'
+    # ), name='password_reset_confirm'),
+
+    # path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
+    #     template_name='accounts/password_reset_complete.html'
+    # ), name='password_reset_complete'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
